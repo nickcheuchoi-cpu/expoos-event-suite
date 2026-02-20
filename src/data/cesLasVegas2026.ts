@@ -156,4 +156,9 @@ export const cesLasVegas2026Event: EventData = {
     { label: "Build Completed", icon: Hammer, date: "Jan 6, 2026", auto: false, done: false },
     { label: "Evaluation Scheduled", icon: BarChart3, date: "Jan 10, 2026", auto: true, done: false },
   ],
+  notifications: [
+    { id: "ces-1", title: "AV power draw above threshold", body: "Combined AV draw at 94% of 32A circuit. Recommend requesting a dedicated 40A circuit from LVCC electrical services.", priority: "medium" as const, time: "3h ago" },
+    { id: "ces-2", title: "Branded furnishing delivery at risk", body: "Vendor flagged a potential 1-day delay. Booth opens in 2 days — alternative local hire sourced as backup.", priority: "low" as const, time: "6h ago" },
+    { id: "ces-3", title: "Build permit approved", body: "LVCC issued standard assembly permit for Booth T-12. All clear to proceed on build day.", priority: "low" as const, time: "1d ago" },
+  ],
 };

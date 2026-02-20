@@ -17,6 +17,8 @@ import {
   Menu,
   X,
   CheckCircle2,
+  AlertTriangle,
+  Info,
 } from "lucide-react";
 
 const navItems = [
@@ -35,19 +37,37 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [eventMenuOpen, setEventMenuOpen] = useState(false);
   const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
+  const [bellOpen, setBellOpen] = useState(false);
+  const [bellPos, setBellPos] = useState({ top: 0, left: 0 });
+  const [readIds, setReadIds] = useState<Set<string>>(new Set());
   const { event, setEvent, allEvents } = useEvent();
   const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const bellRef = useRef<HTMLButtonElement>(null);
+  const bellPanelRef = useRef<HTMLDivElement>(null);
+
+  // Reset read state when event changes
+  useEffect(() => { setReadIds(new Set()); }, [event.id]);
 
   const handleToggleMenu = () => {
     if (!eventMenuOpen && triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
       setDropdownPos({ top: rect.bottom + 6, left: rect.left });
     }
+    setBellOpen(false);
     setEventMenuOpen((prev) => !prev);
   };
 
-  // Close dropdown when clicking outside
+  const handleToggleBell = () => {
+    if (!bellOpen && bellRef.current) {
+      const rect = bellRef.current.getBoundingClientRect();
+      setBellPos({ top: rect.bottom + 6, left: rect.right - 320 });
+    }
+    setEventMenuOpen(false);
+    setBellOpen((prev) => !prev);
+  };
+
+  // Close event dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -62,6 +82,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     }
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [eventMenuOpen]);
+
+  // Close bell panel when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (
+        bellRef.current && !bellRef.current.contains(e.target as Node) &&
+        bellPanelRef.current && !bellPanelRef.current.contains(e.target as Node)
+      ) {
+        setBellOpen(false);
+      }
+    }
+    if (bellOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [bellOpen]);
+
+  const notifications = event.notifications;
+  const unreadCount = notifications.filter((n) => !readIds.has(n.id)).length;
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -166,10 +205,83 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="badge-ai">
               <Zap className="w-2.5 h-2.5" /> AI Active
             </div>
-            <button className="relative p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
+            <button
+              ref={bellRef}
+              onClick={handleToggleBell}
+              className="relative p-2 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+            >
               <Bell className="w-4 h-4" />
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-warning" />
+              {unreadCount > 0 && (
+                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-warning" />
+              )}
             </button>
+
+            {bellOpen && createPortal(
+              <div
+                ref={bellPanelRef}
+                style={{ position: "fixed", top: bellPos.top, left: bellPos.left, zIndex: 9999, width: 320 }}
+                className="rounded-lg border border-border bg-popover shadow-xl overflow-hidden"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                  <div className="flex items-center gap-2">
+                    <Bell className="w-4 h-4 text-foreground" />
+                    <span className="text-sm font-semibold text-popover-foreground">Notifications</span>
+                    {unreadCount > 0 && (
+                      <span className="px-1.5 py-0.5 rounded-full bg-warning/20 text-[10px] font-bold text-warning border border-warning/30">
+                        {unreadCount}
+                      </span>
+                    )}
+                  </div>
+                  {unreadCount > 0 && (
+                    <button
+                      onClick={() => setReadIds(new Set(notifications.map((n) => n.id)))}
+                      className="text-[11px] text-primary hover:underline font-medium"
+                    >
+                      Mark all read
+                    </button>
+                  )}
+                </div>
+
+                {/* Items */}
+                <div className="max-h-80 overflow-y-auto">
+                  {notifications.length === 0 ? (
+                    <div className="px-4 py-8 text-center text-sm text-muted-foreground">No notifications</div>
+                  ) : (
+                    notifications.map((n) => {
+                      const isRead = readIds.has(n.id);
+                      const Icon = n.priority === "high" ? AlertTriangle : n.priority === "medium" ? Zap : Info;
+                      const iconColor = n.priority === "high" ? "text-destructive" : n.priority === "medium" ? "text-warning" : "text-muted-foreground";
+                      return (
+                        <button
+                          key={n.id}
+                          onClick={() => setReadIds((prev) => new Set([...prev, n.id]))}
+                          className={`w-full text-left px-4 py-3 border-b border-border/50 hover:bg-muted/40 transition-colors flex gap-3 ${isRead ? "opacity-50" : ""}`}
+                        >
+                          <Icon className={`w-4 h-4 mt-0.5 shrink-0 ${iconColor}`} />
+                          <div className="min-w-0">
+                            <div className="flex items-center gap-2">
+                              <p className={`text-xs font-semibold text-popover-foreground truncate ${!isRead ? "text-foreground" : ""}`}>{n.title}</p>
+                              {!isRead && <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />}
+                            </div>
+                            <p className="text-[11px] text-muted-foreground mt-0.5 leading-relaxed line-clamp-2">{n.body}</p>
+                            <p className="text-[10px] text-muted-foreground/60 mt-1">{n.time}</p>
+                          </div>
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+
+                {/* Footer */}
+                {notifications.length > 0 && unreadCount === 0 && (
+                  <div className="px-4 py-2.5 border-t border-border text-center text-[11px] text-muted-foreground">
+                    All caught up
+                  </div>
+                )}
+              </div>,
+              document.body
+            )}
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
                 {event.config.userInitials}

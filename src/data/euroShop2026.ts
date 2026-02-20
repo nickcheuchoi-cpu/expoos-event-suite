@@ -200,6 +200,15 @@ export const milestones: Milestone[] = [
   { label: "Evaluation Scheduled", icon: BarChart3, date: "Feb 18, 2026", auto: true, done: false },
 ];
 
+// --- Notifications ---
+
+export const notifications = [
+  { id: "es-1", title: "Rigging approval overdue", body: "Truss approval submitted 3 days ago. No response received from venue. Escalation recommended.", priority: "high" as const, time: "2h ago" },
+  { id: "es-2", title: "Staffing gap: 1 position unfilled", body: "Evening shift on Monday still has no cover. 2 candidates available for immediate assignment.", priority: "medium" as const, time: "5h ago" },
+  { id: "es-3", title: "Compliance warning: truss height", body: "5.5m truss requires a certified stability report. Document not yet submitted to venue.", priority: "high" as const, time: "1d ago" },
+  { id: "es-4", title: "Delivery risk: LED Wall Panels", body: "Supplier flagged a possible 1-day delay on LED Wall Panel delivery due to transport backlog.", priority: "medium" as const, time: "1d ago" },
+];
+
 // --- Bundled EventData export ---
 
 export const euroShop2026Event: EventData = {
@@ -233,4 +242,5 @@ export const euroShop2026Event: EventData = {
   actions,
   confidenceSections,
   milestones,
+  notifications,
 };

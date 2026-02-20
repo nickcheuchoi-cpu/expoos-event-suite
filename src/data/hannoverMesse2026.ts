@@ -159,4 +159,11 @@ export const hannoverMesse2026Event: EventData = {
     { label: "Build Completed", icon: Hammer, date: "Mar 22, 2026", auto: false, done: false },
     { label: "Evaluation Scheduled", icon: BarChart3, date: "Mar 27, 2026", auto: true, done: false },
   ],
+  notifications: [
+    { id: "hm-1", title: "B1 certificate missing — action required", body: "Primary supplier certificate expired Feb 2025. Build permit will be denied without valid documentation. Switch to backup supplier by Mar 8.", priority: "high" as const, time: "30m ago" },
+    { id: "hm-2", title: "4 staff positions still unfilled", body: "2 heavy assembly specialists and 2 general crew remain unassigned. Build starts in 4 weeks. Escalate to secondary agency immediately.", priority: "high" as const, time: "2h ago" },
+    { id: "hm-3", title: "Design approval pending — build date at risk", body: "Deutsche Messe venue office has not issued sign-off. Rear wall height exemption and neighbour consent both outstanding.", priority: "high" as const, time: "4h ago" },
+    { id: "hm-4", title: "Neighbour consent form outstanding", body: "Booth M-88 occupant has not returned signed consent for the 4m rear wall. Deadline is March 10.", priority: "medium" as const, time: "1d ago" },
+    { id: "hm-5", title: "Budget contingency nearly exhausted", body: "Utilization at 88%. Only €10,300 of contingency remaining. Any supplier switch or delay will breach budget.", priority: "high" as const, time: "1d ago" },
+  ],
 };

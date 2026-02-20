@@ -37,6 +37,7 @@ export interface EventData {
   actions: ActionItem[];
   confidenceSections: ConfidenceSection[];
   milestones: Milestone[];
+  notifications: Notification[];
 }
 
 export type StatusLevel = "success" | "warning" | "info";
@@ -142,6 +143,16 @@ export interface ActionItem {
 export interface ConfidenceSection {
   label: string;
   confidence: number;
+}
+
+// --- Notifications ---
+
+export interface Notification {
+  id: string;
+  title: string;
+  body: string;
+  priority: Priority;
+  time: string;
 }
 
 // --- Event History ---
