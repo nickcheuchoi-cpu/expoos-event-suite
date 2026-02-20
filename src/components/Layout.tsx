@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { NavLink, useLocation } from "react-router-dom";
 import { useEvent } from "@/context/EventContext";
 import {
@@ -33,13 +34,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [eventMenuOpen, setEventMenuOpen] = useState(false);
+  const [dropdownPos, setDropdownPos] = useState({ top: 0, left: 0 });
   const { event, setEvent, allEvents } = useEvent();
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+
+  const handleToggleMenu = () => {
+    if (!eventMenuOpen && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownPos({ top: rect.bottom + 6, left: rect.left });
+    }
+    setEventMenuOpen((prev) => !prev);
+  };
 
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        triggerRef.current && !triggerRef.current.contains(e.target as Node) &&
+        dropdownRef.current && !dropdownRef.current.contains(e.target as Node)
+      ) {
         setEventMenuOpen(false);
       }
     }
@@ -113,9 +127,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
 
             {/* Event selector */}
-            <div className="relative" ref={dropdownRef}>
+            <div className="relative">
               <button
-                onClick={() => setEventMenuOpen(!eventMenuOpen)}
+                ref={triggerRef}
+                onClick={handleToggleMenu}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border cursor-pointer hover:bg-muted transition-colors"
               >
                 <div className="w-2 h-2 rounded-full gradient-success" />
@@ -123,21 +138,26 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                 <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ${eventMenuOpen ? "rotate-180" : ""}`} />
               </button>
 
-              {eventMenuOpen && (
-                <div className="absolute top-full left-0 mt-1.5 w-56 rounded-lg border border-border bg-background shadow-xl z-50 overflow-hidden animate-fade-in-delayed">
+              {eventMenuOpen && createPortal(
+                <div
+                  ref={dropdownRef}
+                  style={{ position: "fixed", top: dropdownPos.top, left: dropdownPos.left, zIndex: 9999 }}
+                  className="w-56 rounded-lg border border-border bg-popover shadow-xl overflow-hidden"
+                >
                   {allEvents.map((e) => (
                     <button
                       key={e.id}
                       onClick={() => { setEvent(e); setEventMenuOpen(false); }}
                       className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 text-sm hover:bg-muted transition-colors ${
-                        e.id === event.id ? "text-primary font-semibold bg-primary/5" : "text-foreground"
+                        e.id === event.id ? "text-primary font-semibold bg-primary/5" : "text-popover-foreground"
                       }`}
                     >
                       <span>{e.config.eventName}</span>
                       {e.id === event.id && <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />}
                     </button>
                   ))}
-                </div>
+                </div>,
+                document.body
               )}
             </div>
           </div>
