@@ -8,26 +8,7 @@ import {
   TrendingUp,
   Target,
 } from "lucide-react";
-
-const issues = [
-  { issue: "Rigging approval delay", impact: "Medium", evidence: "Approval arrived late." },
-];
-
-const lessons = [
-  "Submit truss documentation earlier.",
-  "Maintain backup certified staff.",
-];
-
-const actions = [
-  { action: "Pre-submit rigging docs", owner: "Ops Lead", priority: "High" },
-];
-
-const sections = [
-  { label: "Executive Summary", confidence: 94 },
-  { label: "Issues Analysis", confidence: 88 },
-  { label: "Lessons Learned", confidence: 91 },
-  { label: "Action Items", confidence: 96 },
-];
+import { issues, lessons, actions, confidenceSections } from "@/data/euroShop2026";
 
 export default function EvaluationInsights() {
   return (
@@ -56,7 +37,7 @@ export default function EvaluationInsights() {
       <div className="glass-card-elevated p-6">
         <h2 className="text-lg font-semibold text-foreground mb-4">AI Confidence by Section</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {sections.map((s) => (
+          {confidenceSections.map((s) => (
             <div key={s.label} className="p-3 rounded-lg bg-muted/20 border border-border/50 text-center">
               <p className="text-2xl font-bold text-foreground">{s.confidence}%</p>
               <p className="text-[11px] text-muted-foreground mt-1 font-medium">{s.label}</p>

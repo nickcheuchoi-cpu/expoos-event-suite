@@ -7,13 +7,8 @@ import {
   TrendingDown,
   RefreshCw,
 } from "lucide-react";
-
-const costBreakdown = [
-  { item: "Construction Materials", amount: 32000 },
-  { item: "Labor", amount: 18500 },
-  { item: "Rigging", amount: 6000 },
-  { item: "Logistics", amount: 8400 },
-];
+import { costBreakdown, budgetUtilization, offerDocuments } from "@/data/euroShop2026";
+import { clientConfig } from "@/config/client";
 
 const total = costBreakdown.reduce((sum, c) => sum + c.amount, 0);
 
@@ -38,7 +33,7 @@ export default function CostOffers() {
               <div key={item.item} className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/50">
                 <span className="text-sm font-medium text-foreground">{item.item}</span>
                 <span className="text-sm font-semibold text-foreground">
-                  €{item.amount.toLocaleString("de-DE")}
+                  €{item.amount.toLocaleString(clientConfig.locale)}
                 </span>
               </div>
             ))}
@@ -47,7 +42,7 @@ export default function CostOffers() {
           <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
             <span className="text-base font-bold text-foreground">Total Estimated</span>
             <span className="text-2xl font-bold text-gradient-primary">
-              €{total.toLocaleString("de-DE")}
+              €{total.toLocaleString(clientConfig.locale)}
             </span>
           </div>
 
@@ -55,10 +50,10 @@ export default function CostOffers() {
           <div className="mt-6 p-4 rounded-lg bg-muted/20 border border-border/50">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-muted-foreground">Budget Utilization</span>
-              <span className="text-sm font-semibold text-foreground">72%</span>
+              <span className="text-sm font-semibold text-foreground">{budgetUtilization}%</span>
             </div>
             <div className="progress-track">
-              <div className="h-full rounded-full bg-success transition-all duration-1000" style={{ width: "72%" }} />
+              <div className="h-full rounded-full bg-success transition-all duration-1000" style={{ width: `${budgetUtilization}%` }} />
             </div>
           </div>
         </div>
@@ -104,7 +99,7 @@ export default function CostOffers() {
               <h3 className="text-sm font-semibold text-foreground">Documents</h3>
             </div>
             <div className="space-y-2">
-              {["Cost_Estimation_v3.pdf", "Client_Offer_Final.pdf"].map((doc) => (
+              {offerDocuments.map((doc) => (
                 <div key={doc} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 border border-border/50 text-xs text-foreground hover:bg-muted/40 transition-colors cursor-pointer">
                   <FileText className="w-3.5 h-3.5 text-muted-foreground" />
                   {doc}

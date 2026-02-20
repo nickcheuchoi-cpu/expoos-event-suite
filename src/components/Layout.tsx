@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { clientConfig } from "@/config/client";
 import {
   LayoutDashboard,
   PenTool,
@@ -96,7 +97,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             {/* Event selector */}
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border cursor-pointer hover:bg-muted transition-colors">
               <div className="w-2 h-2 rounded-full gradient-success" />
-              <span className="text-sm font-semibold text-foreground">EuroShop 2026</span>
+              <span className="text-sm font-semibold text-foreground">{clientConfig.eventName}</span>
               <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
             </div>
           </div>
@@ -111,11 +112,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
-                OM
+                {clientConfig.userInitials}
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-foreground leading-none">Ops Manager</p>
-                <p className="text-xs text-muted-foreground">Operations</p>
+                <p className="text-sm font-medium text-foreground leading-none">{clientConfig.userDisplayName}</p>
+                <p className="text-xs text-muted-foreground">{clientConfig.userDepartment}</p>
               </div>
             </div>
           </div>

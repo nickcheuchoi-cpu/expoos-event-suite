@@ -1,31 +1,13 @@
-import {
-  CheckCircle2,
-  PenTool,
-  ShieldCheck,
-  Send,
-  Users,
-  Package,
-  Hammer,
-  BarChart3,
-  Zap,
-} from "lucide-react";
-
-const milestones = [
-  { label: "Design Submitted", icon: PenTool, date: "Jan 8, 2026", auto: true, done: true },
-  { label: "Compliance Approved", icon: ShieldCheck, date: "Jan 15, 2026", auto: true, done: true },
-  { label: "Offer Sent", icon: Send, date: "Jan 18, 2026", auto: false, done: true },
-  { label: "Staff Assigned", icon: Users, date: "Jan 22, 2026", auto: true, done: true },
-  { label: "Materials Reserved", icon: Package, date: "Feb 1, 2026", auto: true, done: true },
-  { label: "Build Completed", icon: Hammer, date: "Feb 16, 2026", auto: false, done: false },
-  { label: "Evaluation Scheduled", icon: BarChart3, date: "Feb 18, 2026", auto: true, done: false },
-];
+import { CheckCircle2, Zap } from "lucide-react";
+import { milestones } from "@/data/euroShop2026";
+import { clientConfig } from "@/config/client";
 
 export default function EventHistory() {
   return (
     <div className="space-y-6 animate-slide-up">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Event History</h1>
-        <p className="text-sm text-muted-foreground mt-1">Complete event lifecycle timeline for EuroShop 2026</p>
+        <p className="text-sm text-muted-foreground mt-1">Complete event lifecycle timeline for {clientConfig.eventName}</p>
       </div>
 
       <div className="glass-card-elevated p-6">

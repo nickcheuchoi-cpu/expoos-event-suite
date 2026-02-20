@@ -11,39 +11,8 @@ import {
   Flag,
 } from "lucide-react";
 import { useState } from "react";
-
-const standInfo = [
-  { label: "Stand Name", value: "Hall 3 – Booth B24" },
-  { label: "Stand Type", value: "Island" },
-  { label: "Max Build Height", value: "5.5m" },
-  { label: "Banner Area", value: "10m²" },
-  { label: "Truss Present", value: "Yes" },
-  { label: "B1 Certified Materials", value: "Yes" },
-];
-
-const complianceTable = [
-  { checkpoint: "Open sides", status: "pass", explanation: "All sides >75% open" },
-  { checkpoint: "Max height", status: "warn", explanation: "5.5m requires stability report" },
-  { checkpoint: "Closed walls", status: "pass", explanation: "Within setback rules" },
-  { checkpoint: "Fire safety", status: "pass", explanation: "B1 certificate provided" },
-  { checkpoint: "Rigging", status: "warn", explanation: "Truss >4m requires approval" },
-  { checkpoint: "Banners", status: "pass", explanation: "Within 12m² limit" },
-];
-
-const detailedAnalysis = [
-  {
-    title: "Structural Integrity Assessment",
-    content: "The proposed stand structure at 5.5m height requires a certified stability report per venue regulation §4.2.1. Load calculations must account for truss system TX-500 at maximum span configuration. Lateral wind loads within acceptable parameters for indoor exhibition halls.",
-  },
-  {
-    title: "Fire Safety Compliance",
-    content: "All materials specified in the construction plan hold valid B1 fire resistance certification. Documentation verified against supplier certificates dated within the last 24 months. Emergency exit pathways maintain minimum 2.5m clearance on all accessible sides.",
-  },
-  {
-    title: "Rigging & Suspension Analysis",
-    content: "Truss configuration exceeds 4m threshold, triggering mandatory venue approval process. Estimated approval timeline: 5-7 business days. Recommended action: submit documentation immediately to avoid build schedule impact.",
-  },
-];
+import { standInfo, complianceTable, detailedAnalysis } from "@/data/euroShop2026";
+import { clientConfig } from "@/config/client";
 
 export default function DesignValidation() {
   const [expanded, setExpanded] = useState(false);
@@ -59,7 +28,7 @@ export default function DesignValidation() {
           <p className="text-sm text-muted-foreground mt-1">Stand specifications and compliance verification</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="badge-engine"><Zap className="w-2.5 h-2.5" /> Europort Demo Rules Engine</span>
+          <span className="badge-engine"><Zap className="w-2.5 h-2.5" /> {clientConfig.rulesEngineName}</span>
         </div>
       </div>
 
@@ -167,7 +136,7 @@ export default function DesignValidation() {
             ))}
             <div className="pt-2">
               <span className="badge-engine text-[9px]">
-                <Zap className="w-2.5 h-2.5" /> Validated via Europort Demo Rules Engine
+                <Zap className="w-2.5 h-2.5" /> Validated via {clientConfig.rulesEngineName}
               </span>
             </div>
           </div>

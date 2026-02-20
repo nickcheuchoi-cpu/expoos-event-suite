@@ -6,13 +6,7 @@ import {
   Truck,
   Clock,
 } from "lucide-react";
-
-const inventory = [
-  { name: "Truss System TX-500", status: "Reserved", units: "1 set", icon: "🏗️" },
-  { name: "LED Wall Panels", status: "Reserved", units: "12 units", icon: "📺" },
-  { name: "Modular Wall Panels", status: "Reserved", units: "28 units", icon: "🧱" },
-  { name: "Flooring", status: "Reserved", units: "120m²", icon: "🟫" },
-];
+import { inventory, deliverySchedule } from "@/data/euroShop2026";
 
 export default function MaterialsManagement() {
   return (
@@ -73,12 +67,7 @@ export default function MaterialsManagement() {
           <h2 className="text-lg font-semibold text-foreground">Delivery Schedule</h2>
         </div>
         <div className="space-y-3">
-          {[
-            { item: "Truss System TX-500", date: "Feb 14", risk: false },
-            { item: "LED Wall Panels", date: "Feb 14", risk: true },
-            { item: "Modular Wall Panels", date: "Feb 13", risk: false },
-            { item: "Flooring", date: "Feb 14", risk: true },
-          ].map((d) => (
+          {deliverySchedule.map((d) => (
             <div key={d.item} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/50">
               <span className="text-sm text-foreground">{d.item}</span>
               <div className="flex items-center gap-2">

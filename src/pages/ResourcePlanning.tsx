@@ -8,44 +8,7 @@ import {
   Calendar,
   Award,
 } from "lucide-react";
-
-const candidates = [
-  {
-    name: "Mark Jansen",
-    match: 96,
-    details: ["Certified senior builder", "Speaks German", "Available", "12 previous events"],
-    top: true,
-  },
-  {
-    name: "Lisa Vermeer",
-    match: 82,
-    details: ["Certified builder", "Speaks Dutch/English", "Available", "7 previous events"],
-    top: false,
-  },
-  {
-    name: "Tom Bakker",
-    match: 78,
-    details: ["Certified builder", "Speaks Dutch", "Available from Day 2", "5 previous events"],
-    top: false,
-  },
-];
-
-const matchBreakdown = [
-  { label: "Certification match", status: true },
-  { label: "Language match", status: true },
-  { label: "Availability", status: true },
-  { label: "Skill overlap", value: "91%" },
-];
-
-const shifts = [
-  { day: "Mon", slots: ["Mark J.", "Lisa V.", "—", "Tom B."] },
-  { day: "Tue", slots: ["Mark J.", "Lisa V.", "Anna K.", "Tom B."] },
-  { day: "Wed", slots: ["Mark J.", "Lisa V.", "Anna K.", "—"] },
-  { day: "Thu", slots: ["Mark J.", "—", "Anna K.", "Tom B."] },
-  { day: "Fri", slots: ["Mark J.", "Lisa V.", "Anna K.", "Tom B."] },
-];
-
-const shiftLabels = ["Morning", "Afternoon", "Evening", "Night"];
+import { candidates, matchBreakdown, shifts, shiftLabels } from "@/data/euroShop2026";
 
 export default function ResourcePlanning() {
   return (

@@ -1,76 +1,22 @@
 import {
-  CheckCircle2,
-  ShieldCheck,
-  DollarSign,
-  Users,
-  AlertTriangle,
   Zap,
   ArrowUpRight,
   TrendingUp,
 } from "lucide-react";
-
-const kpis = [
-  {
-    label: "Design Status",
-    value: "Approved",
-    icon: CheckCircle2,
-    status: "success" as const,
-    badge: "✔️",
-  },
-  {
-    label: "Compliance Score",
-    value: "87%",
-    icon: ShieldCheck,
-    status: "info" as const,
-    trend: "+3%",
-  },
-  {
-    label: "Cost Estimation",
-    value: "Completed",
-    icon: DollarSign,
-    status: "success" as const,
-    badge: "✔️",
-  },
-  {
-    label: "Staffing",
-    value: "14/15",
-    icon: Users,
-    status: "warning" as const,
-    sub: "Assigned",
-  },
-  {
-    label: "Risk Level",
-    value: "Medium",
-    icon: AlertTriangle,
-    status: "warning" as const,
-  },
-];
-
-const healthBars = [
-  { label: "Compliance", value: 87, color: "bg-info" },
-  { label: "Budget", value: 72, color: "bg-success" },
-  { label: "Staffing", value: 93, color: "bg-primary" },
-  { label: "Risk", value: 55, color: "bg-warning" },
-];
-
-const aiInsights = [
-  { text: "2 compliance warnings require attention.", priority: "high" },
-  { text: "Senior certified builder required due to 5.5m truss.", priority: "high" },
-  { text: "Post-event evaluation scheduled automatically.", priority: "low" },
-  { text: "Staffing risk reduced after recent assignment.", priority: "medium" },
-];
+import { kpis, healthBars, aiInsights } from "@/data/euroShop2026";
+import { clientConfig } from "@/config/client";
 
 const statusColors = {
   success: "status-success",
   warning: "status-warning",
   info: "status-info",
-};
+} as const;
 
 const statusBg = {
   success: "bg-success/10",
   warning: "bg-warning/10",
   info: "bg-info/10",
-};
+} as const;
 
 export default function Dashboard() {
   return (
@@ -79,7 +25,7 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Event Overview</h1>
-          <p className="text-sm text-muted-foreground mt-1">EuroShop 2026 — Real-time operational status</p>
+          <p className="text-sm text-muted-foreground mt-1">{clientConfig.eventName} — Real-time operational status</p>
         </div>
         <div className="badge-engine">
           <Zap className="w-2.5 h-2.5" /> Live Monitoring

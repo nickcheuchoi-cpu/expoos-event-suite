@@ -1,0 +1,118 @@
+// Domain types for ExpoOS Event Suite
+// All page data is typed against these interfaces — change the scenario data,
+// not these types, when adapting for a new client.
+
+export type StatusLevel = "success" | "warning" | "info";
+export type Priority = "high" | "medium" | "low";
+
+// --- Dashboard ---
+
+export interface KPI {
+  label: string;
+  value: string;
+  icon: React.ElementType;
+  status: StatusLevel;
+  trend?: string;
+  sub?: string;
+  badge?: string;
+}
+
+export interface HealthBar {
+  label: string;
+  value: number;
+  color: string;
+}
+
+export interface Insight {
+  text: string;
+  priority: Priority;
+}
+
+// --- Design & Validation ---
+
+export interface StandSpec {
+  label: string;
+  value: string;
+}
+
+export interface ComplianceRow {
+  checkpoint: string;
+  status: "pass" | "warn";
+  explanation: string;
+}
+
+export interface AnalysisSection {
+  title: string;
+  content: string;
+}
+
+// --- Cost & Offers ---
+
+export interface CostItem {
+  item: string;
+  amount: number;
+}
+
+export interface DeliveryItem {
+  item: string;
+  date: string;
+  risk: boolean;
+}
+
+// --- Resource Planning ---
+
+export interface Candidate {
+  name: string;
+  match: number;
+  details: string[];
+  top: boolean;
+}
+
+export interface MatchCriterion {
+  label: string;
+  status?: boolean;
+  value?: string;
+}
+
+export interface Shift {
+  day: string;
+  slots: string[];
+}
+
+// --- Materials Management ---
+
+export interface InventoryItem {
+  name: string;
+  status: string;
+  units: string;
+  icon: string;
+}
+
+// --- Evaluation & Insights ---
+
+export interface Issue {
+  issue: string;
+  impact: string;
+  evidence: string;
+}
+
+export interface ActionItem {
+  action: string;
+  owner: string;
+  priority: string;
+}
+
+export interface ConfidenceSection {
+  label: string;
+  confidence: number;
+}
+
+// --- Event History ---
+
+export interface Milestone {
+  label: string;
+  icon: React.ElementType;
+  date: string;
+  auto: boolean;
+  done: boolean;
+}

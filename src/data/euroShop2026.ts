@@ -1,0 +1,200 @@
+// Scenario data for EuroShop 2026.
+// Swap this file (or replace the exports below) to re-skin the demo for a new client.
+// All types are defined in ./types.ts
+
+import {
+  CheckCircle2,
+  ShieldCheck,
+  DollarSign,
+  Users,
+  AlertTriangle,
+  PenTool,
+  Send,
+  Package,
+  Hammer,
+  BarChart3,
+} from "lucide-react";
+
+import type {
+  KPI,
+  HealthBar,
+  Insight,
+  StandSpec,
+  ComplianceRow,
+  AnalysisSection,
+  CostItem,
+  DeliveryItem,
+  Candidate,
+  MatchCriterion,
+  Shift,
+  InventoryItem,
+  Issue,
+  ActionItem,
+  ConfidenceSection,
+  Milestone,
+} from "./types";
+
+// --- Dashboard ---
+
+export const kpis: KPI[] = [
+  { label: "Design Status", value: "Approved", icon: CheckCircle2, status: "success", badge: "✔️" },
+  { label: "Compliance Score", value: "87%", icon: ShieldCheck, status: "info", trend: "+3%" },
+  { label: "Cost Estimation", value: "Completed", icon: DollarSign, status: "success", badge: "✔️" },
+  { label: "Staffing", value: "14/15", icon: Users, status: "warning", sub: "Assigned" },
+  { label: "Risk Level", value: "Medium", icon: AlertTriangle, status: "warning" },
+];
+
+export const healthBars: HealthBar[] = [
+  { label: "Compliance", value: 87, color: "bg-info" },
+  { label: "Budget", value: 72, color: "bg-success" },
+  { label: "Staffing", value: 93, color: "bg-primary" },
+  { label: "Risk", value: 55, color: "bg-warning" },
+];
+
+export const aiInsights: Insight[] = [
+  { text: "2 compliance warnings require attention.", priority: "high" },
+  { text: "Senior certified builder required due to 5.5m truss.", priority: "high" },
+  { text: "Post-event evaluation scheduled automatically.", priority: "low" },
+  { text: "Staffing risk reduced after recent assignment.", priority: "medium" },
+];
+
+// --- Design & Validation ---
+
+export const standInfo: StandSpec[] = [
+  { label: "Stand Name", value: "Hall 3 – Booth B24" },
+  { label: "Stand Type", value: "Island" },
+  { label: "Max Build Height", value: "5.5m" },
+  { label: "Banner Area", value: "10m²" },
+  { label: "Truss Present", value: "Yes" },
+  { label: "B1 Certified Materials", value: "Yes" },
+];
+
+export const complianceTable: ComplianceRow[] = [
+  { checkpoint: "Open sides", status: "pass", explanation: "All sides >75% open" },
+  { checkpoint: "Max height", status: "warn", explanation: "5.5m requires stability report" },
+  { checkpoint: "Closed walls", status: "pass", explanation: "Within setback rules" },
+  { checkpoint: "Fire safety", status: "pass", explanation: "B1 certificate provided" },
+  { checkpoint: "Rigging", status: "warn", explanation: "Truss >4m requires approval" },
+  { checkpoint: "Banners", status: "pass", explanation: "Within 12m² limit" },
+];
+
+export const detailedAnalysis: AnalysisSection[] = [
+  {
+    title: "Structural Integrity Assessment",
+    content:
+      "The proposed stand structure at 5.5m height requires a certified stability report per venue regulation §4.2.1. Load calculations must account for truss system TX-500 at maximum span configuration. Lateral wind loads within acceptable parameters for indoor exhibition halls.",
+  },
+  {
+    title: "Fire Safety Compliance",
+    content:
+      "All materials specified in the construction plan hold valid B1 fire resistance certification. Documentation verified against supplier certificates dated within the last 24 months. Emergency exit pathways maintain minimum 2.5m clearance on all accessible sides.",
+  },
+  {
+    title: "Rigging & Suspension Analysis",
+    content:
+      "Truss configuration exceeds 4m threshold, triggering mandatory venue approval process. Estimated approval timeline: 5-7 business days. Recommended action: submit documentation immediately to avoid build schedule impact.",
+  },
+];
+
+// --- Cost & Offers ---
+
+export const costBreakdown: CostItem[] = [
+  { item: "Construction Materials", amount: 32000 },
+  { item: "Labor", amount: 18500 },
+  { item: "Rigging", amount: 6000 },
+  { item: "Logistics", amount: 8400 },
+];
+
+export const budgetUtilization = 72;
+
+export const offerDocuments = ["Cost_Estimation_v3.pdf", "Client_Offer_Final.pdf"];
+
+export const deliverySchedule: DeliveryItem[] = [
+  { item: "Truss System TX-500", date: "Feb 14", risk: false },
+  { item: "LED Wall Panels", date: "Feb 14", risk: true },
+  { item: "Modular Wall Panels", date: "Feb 13", risk: false },
+  { item: "Flooring", date: "Feb 14", risk: true },
+];
+
+// --- Resource Planning ---
+
+export const candidates: Candidate[] = [
+  {
+    name: "Mark Jansen",
+    match: 96,
+    details: ["Certified senior builder", "Speaks German", "Available", "12 previous events"],
+    top: true,
+  },
+  {
+    name: "Lisa Vermeer",
+    match: 82,
+    details: ["Certified builder", "Speaks Dutch/English", "Available", "7 previous events"],
+    top: false,
+  },
+  {
+    name: "Tom Bakker",
+    match: 78,
+    details: ["Certified builder", "Speaks Dutch", "Available from Day 2", "5 previous events"],
+    top: false,
+  },
+];
+
+export const matchBreakdown: MatchCriterion[] = [
+  { label: "Certification match", status: true },
+  { label: "Language match", status: true },
+  { label: "Availability", status: true },
+  { label: "Skill overlap", value: "91%" },
+];
+
+export const shifts: Shift[] = [
+  { day: "Mon", slots: ["Mark J.", "Lisa V.", "—", "Tom B."] },
+  { day: "Tue", slots: ["Mark J.", "Lisa V.", "Anna K.", "Tom B."] },
+  { day: "Wed", slots: ["Mark J.", "Lisa V.", "Anna K.", "—"] },
+  { day: "Thu", slots: ["Mark J.", "—", "Anna K.", "Tom B."] },
+  { day: "Fri", slots: ["Mark J.", "Lisa V.", "Anna K.", "Tom B."] },
+];
+
+export const shiftLabels = ["Morning", "Afternoon", "Evening", "Night"];
+
+// --- Materials Management ---
+
+export const inventory: InventoryItem[] = [
+  { name: "Truss System TX-500", status: "Reserved", units: "1 set", icon: "🏗️" },
+  { name: "LED Wall Panels", status: "Reserved", units: "12 units", icon: "📺" },
+  { name: "Modular Wall Panels", status: "Reserved", units: "28 units", icon: "🧱" },
+  { name: "Flooring", status: "Reserved", units: "120m²", icon: "🟫" },
+];
+
+// --- Evaluation & Insights ---
+
+export const issues: Issue[] = [
+  { issue: "Rigging approval delay", impact: "Medium", evidence: "Approval arrived late." },
+];
+
+export const lessons: string[] = [
+  "Submit truss documentation earlier.",
+  "Maintain backup certified staff.",
+];
+
+export const actions: ActionItem[] = [
+  { action: "Pre-submit rigging docs", owner: "Ops Lead", priority: "High" },
+];
+
+export const confidenceSections: ConfidenceSection[] = [
+  { label: "Executive Summary", confidence: 94 },
+  { label: "Issues Analysis", confidence: 88 },
+  { label: "Lessons Learned", confidence: 91 },
+  { label: "Action Items", confidence: 96 },
+];
+
+// --- Event History ---
+
+export const milestones: Milestone[] = [
+  { label: "Design Submitted", icon: PenTool, date: "Jan 8, 2026", auto: true, done: true },
+  { label: "Compliance Approved", icon: ShieldCheck, date: "Jan 15, 2026", auto: true, done: true },
+  { label: "Offer Sent", icon: Send, date: "Jan 18, 2026", auto: false, done: true },
+  { label: "Staff Assigned", icon: Users, date: "Jan 22, 2026", auto: true, done: true },
+  { label: "Materials Reserved", icon: Package, date: "Feb 1, 2026", auto: true, done: true },
+  { label: "Build Completed", icon: Hammer, date: "Feb 16, 2026", auto: false, done: false },
+  { label: "Evaluation Scheduled", icon: BarChart3, date: "Feb 18, 2026", auto: true, done: false },
+];
