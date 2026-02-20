@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import { clientConfig } from "@/config/client";
+import { useEvent } from "@/context/EventContext";
 import {
   LayoutDashboard,
   PenTool,
@@ -15,6 +15,7 @@ import {
   Zap,
   Menu,
   X,
+  CheckCircle2,
 } from "lucide-react";
 
 const navItems = [
@@ -31,6 +32,22 @@ const navItems = [
 export default function Layout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [eventMenuOpen, setEventMenuOpen] = useState(false);
+  const { event, setEvent, allEvents } = useEvent();
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setEventMenuOpen(false);
+      }
+    }
+    if (eventMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [eventMenuOpen]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-background">
@@ -94,11 +111,34 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               {sidebarOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
+
             {/* Event selector */}
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border cursor-pointer hover:bg-muted transition-colors">
-              <div className="w-2 h-2 rounded-full gradient-success" />
-              <span className="text-sm font-semibold text-foreground">{clientConfig.eventName}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-muted-foreground" />
+            <div className="relative" ref={dropdownRef}>
+              <button
+                onClick={() => setEventMenuOpen(!eventMenuOpen)}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-muted/50 border border-border cursor-pointer hover:bg-muted transition-colors"
+              >
+                <div className="w-2 h-2 rounded-full gradient-success" />
+                <span className="text-sm font-semibold text-foreground">{event.config.eventName}</span>
+                <ChevronDown className={`w-3.5 h-3.5 text-muted-foreground transition-transform duration-200 ${eventMenuOpen ? "rotate-180" : ""}`} />
+              </button>
+
+              {eventMenuOpen && (
+                <div className="absolute top-full left-0 mt-1.5 w-56 rounded-lg border border-border bg-background shadow-xl z-50 overflow-hidden animate-fade-in-delayed">
+                  {allEvents.map((e) => (
+                    <button
+                      key={e.id}
+                      onClick={() => { setEvent(e); setEventMenuOpen(false); }}
+                      className={`w-full flex items-center justify-between gap-2 px-3 py-2.5 text-sm hover:bg-muted transition-colors ${
+                        e.id === event.id ? "text-primary font-semibold bg-primary/5" : "text-foreground"
+                      }`}
+                    >
+                      <span>{e.config.eventName}</span>
+                      {e.id === event.id && <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0" />}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
@@ -112,11 +152,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </button>
             <div className="flex items-center gap-3">
               <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center text-xs font-bold text-primary-foreground">
-                {clientConfig.userInitials}
+                {event.config.userInitials}
               </div>
               <div className="hidden sm:block">
-                <p className="text-sm font-medium text-foreground leading-none">{clientConfig.userDisplayName}</p>
-                <p className="text-xs text-muted-foreground">{clientConfig.userDepartment}</p>
+                <p className="text-sm font-medium text-foreground leading-none">{event.config.userDisplayName}</p>
+                <p className="text-xs text-muted-foreground">{event.config.userDepartment}</p>
               </div>
             </div>
           </div>

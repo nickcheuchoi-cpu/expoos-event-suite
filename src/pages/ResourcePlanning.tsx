@@ -8,9 +8,12 @@ import {
   Calendar,
   Award,
 } from "lucide-react";
-import { candidates, matchBreakdown, shifts, shiftLabels } from "@/data/euroShop2026";
+import { useEvent } from "@/context/EventContext";
 
 export default function ResourcePlanning() {
+  const { event } = useEvent();
+  const { candidates, matchBreakdown, shifts, shiftLabels } = event;
+
   return (
     <div className="space-y-6 animate-slide-up">
       <div>

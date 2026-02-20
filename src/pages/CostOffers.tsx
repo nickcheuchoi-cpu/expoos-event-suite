@@ -7,12 +7,13 @@ import {
   TrendingDown,
   RefreshCw,
 } from "lucide-react";
-import { costBreakdown, budgetUtilization, offerDocuments } from "@/data/euroShop2026";
-import { clientConfig } from "@/config/client";
-
-const total = costBreakdown.reduce((sum, c) => sum + c.amount, 0);
+import { useEvent } from "@/context/EventContext";
 
 export default function CostOffers() {
+  const { event } = useEvent();
+  const { costBreakdown, budgetUtilization, offerDocuments, config } = event;
+  const total = costBreakdown.reduce((sum, c) => sum + c.amount, 0);
+
   return (
     <div className="space-y-6 animate-slide-up">
       <div>
@@ -33,7 +34,7 @@ export default function CostOffers() {
               <div key={item.item} className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/50">
                 <span className="text-sm font-medium text-foreground">{item.item}</span>
                 <span className="text-sm font-semibold text-foreground">
-                  €{item.amount.toLocaleString(clientConfig.locale)}
+                  €{item.amount.toLocaleString(config.locale)}
                 </span>
               </div>
             ))}
@@ -42,7 +43,7 @@ export default function CostOffers() {
           <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
             <span className="text-base font-bold text-foreground">Total Estimated</span>
             <span className="text-2xl font-bold text-gradient-primary">
-              €{total.toLocaleString(clientConfig.locale)}
+              €{total.toLocaleString(config.locale)}
             </span>
           </div>
 

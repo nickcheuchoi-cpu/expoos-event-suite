@@ -1,6 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { HashRouter, Routes, Route } from "react-router-dom";
+import { EventProvider } from "./context/EventContext";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import DesignValidation from "./pages/DesignValidation";
@@ -16,6 +17,7 @@ const App = () => (
   <TooltipProvider>
     <Toaster />
     <HashRouter>
+      <EventProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -29,6 +31,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
+      </EventProvider>
       </HashRouter>
   </TooltipProvider>
 );

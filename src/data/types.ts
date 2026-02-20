@@ -2,6 +2,43 @@
 // All page data is typed against these interfaces — change the scenario data,
 // not these types, when adapting for a new client.
 
+// --- Event Config & Bundle ---
+
+export interface EventConfig {
+  eventName: string;
+  currency: string;
+  locale: string;
+  userDisplayName: string;
+  userDepartment: string;
+  userInitials: string;
+  rulesEngineName: string;
+}
+
+export interface EventData {
+  id: string;
+  config: EventConfig;
+  kpis: KPI[];
+  healthBars: HealthBar[];
+  aiInsights: Insight[];
+  standInfo: StandSpec[];
+  complianceTable: ComplianceRow[];
+  detailedAnalysis: AnalysisSection[];
+  costBreakdown: CostItem[];
+  budgetUtilization: number;
+  offerDocuments: string[];
+  deliverySchedule: DeliveryItem[];
+  candidates: Candidate[];
+  matchBreakdown: MatchCriterion[];
+  shifts: Shift[];
+  shiftLabels: string[];
+  inventory: InventoryItem[];
+  issues: Issue[];
+  lessons: string[];
+  actions: ActionItem[];
+  confidenceSections: ConfidenceSection[];
+  milestones: Milestone[];
+}
+
 export type StatusLevel = "success" | "warning" | "info";
 export type Priority = "high" | "medium" | "low";
 

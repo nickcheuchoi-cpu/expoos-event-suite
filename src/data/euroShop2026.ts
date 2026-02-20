@@ -32,6 +32,7 @@ import type {
   ActionItem,
   ConfidenceSection,
   Milestone,
+  EventData,
 } from "./types";
 
 // --- Dashboard ---
@@ -198,3 +199,38 @@ export const milestones: Milestone[] = [
   { label: "Build Completed", icon: Hammer, date: "Feb 16, 2026", auto: false, done: false },
   { label: "Evaluation Scheduled", icon: BarChart3, date: "Feb 18, 2026", auto: true, done: false },
 ];
+
+// --- Bundled EventData export ---
+
+export const euroShop2026Event: EventData = {
+  id: "euroshop-2026",
+  config: {
+    eventName: "EuroShop 2026",
+    currency: "EUR",
+    locale: "de-DE",
+    userDisplayName: "Ops Manager",
+    userDepartment: "Operations",
+    userInitials: "OM",
+    rulesEngineName: "Europort Demo Rules Engine",
+  },
+  kpis,
+  healthBars,
+  aiInsights,
+  standInfo,
+  complianceTable,
+  detailedAnalysis,
+  costBreakdown,
+  budgetUtilization,
+  offerDocuments,
+  deliverySchedule,
+  candidates,
+  matchBreakdown,
+  shifts,
+  shiftLabels,
+  inventory,
+  issues,
+  lessons,
+  actions,
+  confidenceSections,
+  milestones,
+};

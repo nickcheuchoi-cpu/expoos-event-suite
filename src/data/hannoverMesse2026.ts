@@ -1,0 +1,162 @@
+// Scenario data for Hannover Messe 2026.
+import {
+  CheckCircle2,
+  ShieldCheck,
+  DollarSign,
+  Users,
+  AlertTriangle,
+  PenTool,
+  Send,
+  Package,
+  Hammer,
+  BarChart3,
+} from "lucide-react";
+import type { EventData } from "./types";
+
+export const hannoverMesse2026Event: EventData = {
+  id: "hannover-messe-2026",
+  config: {
+    eventName: "Hannover Messe 2026",
+    currency: "EUR",
+    locale: "de-DE",
+    userDisplayName: "Ops Manager",
+    userDepartment: "Operations",
+    userInitials: "OM",
+    rulesEngineName: "Europort Demo Rules Engine",
+  },
+  kpis: [
+    { label: "Design Status", value: "Pending", icon: CheckCircle2, status: "warning" },
+    { label: "Compliance Score", value: "71%", icon: ShieldCheck, status: "warning", trend: "-4%" },
+    { label: "Cost Estimation", value: "Completed", icon: DollarSign, status: "success", badge: "✔️" },
+    { label: "Staffing", value: "12/16", icon: Users, status: "warning", sub: "Assigned" },
+    { label: "Risk Level", value: "High", icon: AlertTriangle, status: "warning" },
+  ],
+  healthBars: [
+    { label: "Compliance", value: 71, color: "bg-warning" },
+    { label: "Budget", value: 88, color: "bg-warning" },
+    { label: "Staffing", value: 75, color: "bg-warning" },
+    { label: "Risk", value: 82, color: "bg-warning" },
+  ],
+  aiInsights: [
+    { text: "3 compliance warnings unresolved — venue deadline in 5 days.", priority: "high" },
+    { text: "4 staff positions unfilled, including 2 heavy assembly specialists.", priority: "high" },
+    { text: "Budget at 88% utilization — contingency buffer nearly exhausted.", priority: "high" },
+    { text: "Design approval pending venue review. Build date at risk.", priority: "medium" },
+  ],
+  standInfo: [
+    { label: "Stand Name", value: "Hall 6 – Booth M-89" },
+    { label: "Stand Type", value: "Linear" },
+    { label: "Max Build Height", value: "4.0m" },
+    { label: "Banner Area", value: "6m²" },
+    { label: "Truss Present", value: "No" },
+    { label: "B1 Certified Materials", value: "Pending" },
+  ],
+  complianceTable: [
+    { checkpoint: "Open sides", status: "warn", explanation: "Linear booth at boundary — side clearance borderline" },
+    { checkpoint: "Max height", status: "pass", explanation: "4.0m within Hall 6 limit of 4.5m" },
+    { checkpoint: "Closed walls", status: "warn", explanation: "Rear wall exceeds 2.5m without neighbour consent" },
+    { checkpoint: "Fire safety", status: "warn", explanation: "B1 certificate pending from supplier" },
+    { checkpoint: "Rigging", status: "pass", explanation: "No rigging — within regulations" },
+    { checkpoint: "Banners", status: "pass", explanation: "6m² within allowed limit" },
+  ],
+  detailedAnalysis: [
+    {
+      title: "Design Review Status",
+      content:
+        "Stand design submitted to Deutsche Messe venue office on March 1. Awaiting sign-off on rear wall height exemption and neighbour consent documentation. Until approved, build permit cannot be issued.",
+    },
+    {
+      title: "B1 Fire Certificate Gap",
+      content:
+        "Primary wall panel supplier has not yet provided updated B1 certification. Existing certificate expired February 2025. Alternative certified supplier identified — switch decision required by March 8 to maintain build timeline.",
+    },
+    {
+      title: "Staffing Risk Assessment",
+      content:
+        "4 of 16 required positions remain unfilled, including 2 heavy assembly specialists required for 4m wall system installation. Current sourcing pipeline has 3 candidates under review. Recommend escalation to secondary staffing agency.",
+    },
+  ],
+  costBreakdown: [
+    { item: "Construction Materials", amount: 41000 },
+    { item: "Labor", amount: 24500 },
+    { item: "Electrical & AV", amount: 9000 },
+    { item: "Logistics", amount: 11200 },
+  ],
+  budgetUtilization: 88,
+  offerDocuments: ["HM_Cost_Estimation_v1.pdf", "HM_Client_Offer_Draft.pdf"],
+  deliverySchedule: [
+    { item: "Wall Panel System", date: "Mar 19", risk: true },
+    { item: "Electrical Fittings", date: "Mar 18", risk: false },
+    { item: "Branded Graphics", date: "Mar 20", risk: true },
+    { item: "Flooring", date: "Mar 19", risk: true },
+  ],
+  candidates: [
+    {
+      name: "Klaus Meier",
+      match: 88,
+      details: ["Heavy assembly certified", "Speaks German", "Available from Day 1", "15 previous events"],
+      top: true,
+    },
+    {
+      name: "Fatima Yilmaz",
+      match: 74,
+      details: ["Certified builder", "Speaks German/Turkish", "Available from Day 2", "8 previous events"],
+      top: false,
+    },
+    {
+      name: "Rolf Brandt",
+      match: 69,
+      details: ["Certified builder", "Speaks German", "Available", "4 previous events"],
+      top: false,
+    },
+  ],
+  matchBreakdown: [
+    { label: "Certification match", status: true },
+    { label: "Language match", status: true },
+    { label: "Availability", status: false },
+    { label: "Skill overlap", value: "74%" },
+  ],
+  shifts: [
+    { day: "Mon", slots: ["Klaus M.", "Fatima Y.", "—", "—"] },
+    { day: "Tue", slots: ["Klaus M.", "Fatima Y.", "Rolf B.", "—"] },
+    { day: "Wed", slots: ["Klaus M.", "—", "Rolf B.", "—"] },
+    { day: "Thu", slots: ["Klaus M.", "Fatima Y.", "Rolf B.", "—"] },
+    { day: "Fri", slots: ["Klaus M.", "Fatima Y.", "—", "—"] },
+  ],
+  shiftLabels: ["Morning", "Afternoon", "Evening", "Night"],
+  inventory: [
+    { name: "Wall Panel System", status: "Ordered", units: "42 panels", icon: "🧱" },
+    { name: "Electrical Fittings", status: "Reserved", units: "1 set", icon: "⚡" },
+    { name: "Branded Graphics", status: "In Production", units: "8 prints", icon: "🖼️" },
+    { name: "Flooring", status: "Ordered", units: "85m²", icon: "🟫" },
+  ],
+  issues: [
+    { issue: "B1 certificate not renewed", impact: "High", evidence: "Supplier certificate expired Feb 2025." },
+    { issue: "Rear wall height non-compliance", impact: "Medium", evidence: "Neighbour consent outstanding." },
+  ],
+  lessons: [
+    "Verify all material certifications 90 days before event, not 30.",
+    "Obtain neighbour consent signatures as part of initial stand registration.",
+    "Maintain a pre-qualified backup staffing pool for large-format builds.",
+  ],
+  actions: [
+    { action: "Switch to certified panel supplier", owner: "Procurement", priority: "High" },
+    { action: "Chase neighbour consent form", owner: "Ops Lead", priority: "High" },
+    { action: "Engage backup staffing agency", owner: "HR", priority: "High" },
+  ],
+  confidenceSections: [
+    { label: "Executive Summary", confidence: 82 },
+    { label: "Issues Analysis", confidence: 78 },
+    { label: "Lessons Learned", confidence: 85 },
+    { label: "Action Items", confidence: 90 },
+  ],
+  milestones: [
+    { label: "Design Submitted", icon: PenTool, date: "Mar 1, 2026", auto: true, done: true },
+    { label: "Compliance Approved", icon: ShieldCheck, date: "Mar 8, 2026", auto: true, done: false },
+    { label: "Offer Sent", icon: Send, date: "Feb 20, 2026", auto: false, done: true },
+    { label: "Staff Assigned", icon: Users, date: "Mar 10, 2026", auto: true, done: false },
+    { label: "Materials Reserved", icon: Package, date: "Mar 5, 2026", auto: true, done: false },
+    { label: "Build Completed", icon: Hammer, date: "Mar 22, 2026", auto: false, done: false },
+    { label: "Evaluation Scheduled", icon: BarChart3, date: "Mar 27, 2026", auto: true, done: false },
+  ],
+};

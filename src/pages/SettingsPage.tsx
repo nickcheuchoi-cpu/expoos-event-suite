@@ -1,16 +1,18 @@
 import { Settings as SettingsIcon, Zap } from "lucide-react";
-import { clientConfig } from "@/config/client";
-
-const configRows = [
-  { label: "Active Event", value: clientConfig.eventName },
-  { label: "Currency", value: clientConfig.currency },
-  { label: "Locale", value: clientConfig.locale },
-  { label: "Rules Engine", value: clientConfig.rulesEngineName },
-  { label: "User Role", value: clientConfig.userDisplayName },
-  { label: "Department", value: clientConfig.userDepartment },
-];
+import { useEvent } from "@/context/EventContext";
 
 export default function SettingsPage() {
+  const { event } = useEvent();
+  const { config } = event;
+  const configRows = [
+    { label: "Active Event", value: config.eventName },
+    { label: "Currency", value: config.currency },
+    { label: "Locale", value: config.locale },
+    { label: "Rules Engine", value: config.rulesEngineName },
+    { label: "User Role", value: config.userDisplayName },
+    { label: "Department", value: config.userDepartment },
+  ];
+
   return (
     <div className="space-y-6 animate-slide-up">
       <div className="flex items-center justify-between">

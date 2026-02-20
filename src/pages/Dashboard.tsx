@@ -3,8 +3,7 @@ import {
   ArrowUpRight,
   TrendingUp,
 } from "lucide-react";
-import { kpis, healthBars, aiInsights } from "@/data/euroShop2026";
-import { clientConfig } from "@/config/client";
+import { useEvent } from "@/context/EventContext";
 
 const statusColors = {
   success: "status-success",
@@ -19,13 +18,16 @@ const statusBg = {
 } as const;
 
 export default function Dashboard() {
+  const { event } = useEvent();
+  const { kpis, healthBars, aiInsights, config } = event;
+
   return (
     <div className="space-y-6 animate-slide-up">
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Event Overview</h1>
-          <p className="text-sm text-muted-foreground mt-1">{clientConfig.eventName} — Real-time operational status</p>
+          <p className="text-sm text-muted-foreground mt-1">{config.eventName} — Real-time operational status</p>
         </div>
         <div className="badge-engine">
           <Zap className="w-2.5 h-2.5" /> Live Monitoring

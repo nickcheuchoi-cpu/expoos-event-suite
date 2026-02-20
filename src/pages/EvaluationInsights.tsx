@@ -8,9 +8,12 @@ import {
   TrendingUp,
   Target,
 } from "lucide-react";
-import { issues, lessons, actions, confidenceSections } from "@/data/euroShop2026";
+import { useEvent } from "@/context/EventContext";
 
 export default function EvaluationInsights() {
+  const { event } = useEvent();
+  const { issues, lessons, actions, confidenceSections } = event;
+
   return (
     <div className="space-y-6 animate-slide-up">
       <div className="flex items-center justify-between">

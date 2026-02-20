@@ -11,10 +11,11 @@ import {
   Flag,
 } from "lucide-react";
 import { useState } from "react";
-import { standInfo, complianceTable, detailedAnalysis } from "@/data/euroShop2026";
-import { clientConfig } from "@/config/client";
+import { useEvent } from "@/context/EventContext";
 
 export default function DesignValidation() {
+  const { event } = useEvent();
+  const { standInfo, complianceTable, detailedAnalysis, config } = event;
   const [expanded, setExpanded] = useState(false);
 
   const passCount = complianceTable.filter((c) => c.status === "pass").length;
@@ -28,7 +29,7 @@ export default function DesignValidation() {
           <p className="text-sm text-muted-foreground mt-1">Stand specifications and compliance verification</p>
         </div>
         <div className="flex items-center gap-2">
-          <span className="badge-engine"><Zap className="w-2.5 h-2.5" /> {clientConfig.rulesEngineName}</span>
+          <span className="badge-engine"><Zap className="w-2.5 h-2.5" /> {config.rulesEngineName}</span>
         </div>
       </div>
 
@@ -136,7 +137,7 @@ export default function DesignValidation() {
             ))}
             <div className="pt-2">
               <span className="badge-engine text-[9px]">
-                <Zap className="w-2.5 h-2.5" /> Validated via {clientConfig.rulesEngineName}
+                <Zap className="w-2.5 h-2.5" /> Validated via {config.rulesEngineName}
               </span>
             </div>
           </div>

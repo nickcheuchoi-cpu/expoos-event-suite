@@ -1,0 +1,159 @@
+// Scenario data for CES Las Vegas 2026.
+import {
+  CheckCircle2,
+  ShieldCheck,
+  DollarSign,
+  Users,
+  AlertTriangle,
+  PenTool,
+  Send,
+  Package,
+  Hammer,
+  BarChart3,
+} from "lucide-react";
+import type { EventData } from "./types";
+
+export const cesLasVegas2026Event: EventData = {
+  id: "ces-las-vegas-2026",
+  config: {
+    eventName: "CES Las Vegas 2026",
+    currency: "USD",
+    locale: "en-US",
+    userDisplayName: "Ops Manager",
+    userDepartment: "Operations",
+    userInitials: "OM",
+    rulesEngineName: "ExpoOS Rules Engine",
+  },
+  kpis: [
+    { label: "Design Status", value: "Approved", icon: CheckCircle2, status: "success", badge: "✔️" },
+    { label: "Compliance Score", value: "92%", icon: ShieldCheck, status: "success", trend: "+5%" },
+    { label: "Cost Estimation", value: "In Progress", icon: DollarSign, status: "warning" },
+    { label: "Staffing", value: "8/8", icon: Users, status: "success", sub: "Assigned", badge: "✔️" },
+    { label: "Risk Level", value: "Low", icon: AlertTriangle, status: "success" },
+  ],
+  healthBars: [
+    { label: "Compliance", value: 92, color: "bg-success" },
+    { label: "Budget", value: 45, color: "bg-success" },
+    { label: "Staffing", value: 100, color: "bg-primary" },
+    { label: "Risk", value: 18, color: "bg-success" },
+  ],
+  aiInsights: [
+    { text: "All compliance checkpoints cleared. No action required.", priority: "low" },
+    { text: "AV equipment cost running 8% over initial estimate.", priority: "medium" },
+    { text: "Full staffing achieved. Team confirmed for all 3 days.", priority: "low" },
+    { text: "LED wall delivery confirmed 2 days ahead of schedule.", priority: "low" },
+  ],
+  standInfo: [
+    { label: "Stand Name", value: "Hall A – Booth T-12" },
+    { label: "Stand Type", value: "Corner" },
+    { label: "Max Build Height", value: "3.0m" },
+    { label: "Screen Area", value: "24m²" },
+    { label: "Truss Present", value: "No" },
+    { label: "Class A Materials", value: "Yes" },
+  ],
+  complianceTable: [
+    { checkpoint: "Open sides", status: "pass", explanation: "Corner booth exceeds 75% open requirement" },
+    { checkpoint: "Max height", status: "pass", explanation: "3.0m within 3.5m LVCC Hall A limit" },
+    { checkpoint: "Screen lighting", status: "pass", explanation: "Lux levels within LVCC guidelines" },
+    { checkpoint: "Fire safety", status: "pass", explanation: "NFPA compliant materials certified" },
+    { checkpoint: "Power load", status: "warn", explanation: "AV draw at 94% of allocated circuit capacity" },
+    { checkpoint: "Signage", status: "pass", explanation: "Within 2.5m² overhead limit" },
+  ],
+  detailedAnalysis: [
+    {
+      title: "Structural Compliance",
+      content:
+        "Corner booth configuration at 3.0m height is well within LVCC Hall A regulations. No rigging or special approval processes required. Standard assembly permits cover all planned construction activities.",
+    },
+    {
+      title: "AV & Electrical Assessment",
+      content:
+        "Combined AV system power draw is projected at 94% of the allocated 32A circuit. Recommend coordinating with LVCC electrical services for a dedicated 40A circuit to provide safe headroom and prevent potential trip events during peak demo hours.",
+    },
+    {
+      title: "Fire & Safety Review",
+      content:
+        "All display materials and flooring meet NFPA 701 flame resistance standards. Documentation verified and on file. Emergency egress paths maintain a minimum 2.0m clearance on both open sides.",
+    },
+  ],
+  costBreakdown: [
+    { item: "Construction & Furniture", amount: 28000 },
+    { item: "AV & Technology", amount: 45000 },
+    { item: "Labor", amount: 12000 },
+    { item: "Logistics & Shipping", amount: 6500 },
+  ],
+  budgetUtilization: 45,
+  offerDocuments: ["CES_Cost_Estimate_v2.pdf", "Client_Proposal_Draft.pdf"],
+  deliverySchedule: [
+    { item: "Display Screens (8 units)", date: "Jan 4", risk: false },
+    { item: "Modular Booth Structure", date: "Jan 4", risk: false },
+    { item: "AV Rack & Cabling", date: "Jan 5", risk: false },
+    { item: "Branded Furnishings", date: "Jan 5", risk: true },
+  ],
+  candidates: [
+    {
+      name: "Sarah Mitchell",
+      match: 98,
+      details: ["Certified AV technician", "Speaks English", "Available all 3 days", "20 previous events"],
+      top: true,
+    },
+    {
+      name: "James Ortega",
+      match: 85,
+      details: ["Certified builder", "Speaks English/Spanish", "Available", "9 previous events"],
+      top: false,
+    },
+    {
+      name: "Priya Nair",
+      match: 79,
+      details: ["Certified builder", "Speaks English", "Available from Day 1", "6 previous events"],
+      top: false,
+    },
+  ],
+  matchBreakdown: [
+    { label: "Certification match", status: true },
+    { label: "Language match", status: true },
+    { label: "Availability", status: true },
+    { label: "Skill overlap", value: "97%" },
+  ],
+  shifts: [
+    { day: "Mon", slots: ["Sarah M.", "James O.", "Priya N.", "—"] },
+    { day: "Tue", slots: ["Sarah M.", "James O.", "Priya N.", "—"] },
+    { day: "Wed", slots: ["Sarah M.", "James O.", "Priya N.", "—"] },
+  ],
+  shiftLabels: ["Morning", "Afternoon", "Evening", "Night"],
+  inventory: [
+    { name: "Display Screens (8 units)", status: "Confirmed", units: "8 units", icon: "📺" },
+    { name: "Modular Booth Structure", status: "Reserved", units: "1 set", icon: "🏗️" },
+    { name: "AV Rack & Cabling", status: "Reserved", units: "2 racks", icon: "🎛️" },
+    { name: "Branded Furnishings", status: "In Transit", units: "12 pieces", icon: "🪑" },
+  ],
+  issues: [
+    { issue: "AV power draw exceeded estimate", impact: "Low", evidence: "Circuit capacity was underestimated during planning." },
+    { issue: "Furnishing delivery delay", impact: "Low", evidence: "Branded furniture arrived 4 hours late on Day 1." },
+  ],
+  lessons: [
+    "Always allocate 120% of estimated AV power draw in booth planning.",
+    "Order branded furnishings at least 3 weeks in advance.",
+    "Pre-confirm all delivery windows with LVCC logistics 48h before.",
+  ],
+  actions: [
+    { action: "Update AV power budget template", owner: "Tech Lead", priority: "High" },
+    { action: "Establish furnishing vendor SLA", owner: "Procurement", priority: "Medium" },
+  ],
+  confidenceSections: [
+    { label: "Executive Summary", confidence: 97 },
+    { label: "Issues Analysis", confidence: 91 },
+    { label: "Lessons Learned", confidence: 95 },
+    { label: "Action Items", confidence: 98 },
+  ],
+  milestones: [
+    { label: "Design Submitted", icon: PenTool, date: "Nov 15, 2025", auto: true, done: true },
+    { label: "Compliance Approved", icon: ShieldCheck, date: "Nov 22, 2025", auto: true, done: true },
+    { label: "Offer Sent", icon: Send, date: "Nov 28, 2025", auto: false, done: true },
+    { label: "Staff Assigned", icon: Users, date: "Dec 5, 2025", auto: true, done: true },
+    { label: "Materials Reserved", icon: Package, date: "Dec 10, 2025", auto: true, done: true },
+    { label: "Build Completed", icon: Hammer, date: "Jan 6, 2026", auto: false, done: false },
+    { label: "Evaluation Scheduled", icon: BarChart3, date: "Jan 10, 2026", auto: true, done: false },
+  ],
+};

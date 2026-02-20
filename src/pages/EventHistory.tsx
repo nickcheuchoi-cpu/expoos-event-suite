@@ -1,13 +1,15 @@
 import { CheckCircle2, Zap } from "lucide-react";
-import { milestones } from "@/data/euroShop2026";
-import { clientConfig } from "@/config/client";
+import { useEvent } from "@/context/EventContext";
 
 export default function EventHistory() {
+  const { event } = useEvent();
+  const { milestones, config } = event;
+
   return (
     <div className="space-y-6 animate-slide-up">
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Event History</h1>
-        <p className="text-sm text-muted-foreground mt-1">Complete event lifecycle timeline for {clientConfig.eventName}</p>
+        <p className="text-sm text-muted-foreground mt-1">Complete event lifecycle timeline for {config.eventName}</p>
       </div>
 
       <div className="glass-card-elevated p-6">

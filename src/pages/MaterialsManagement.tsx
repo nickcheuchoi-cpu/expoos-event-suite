@@ -6,9 +6,12 @@ import {
   Truck,
   Clock,
 } from "lucide-react";
-import { inventory, deliverySchedule } from "@/data/euroShop2026";
+import { useEvent } from "@/context/EventContext";
 
 export default function MaterialsManagement() {
+  const { event } = useEvent();
+  const { inventory, deliverySchedule } = event;
+
   return (
     <div className="space-y-6 animate-slide-up">
       <div>
