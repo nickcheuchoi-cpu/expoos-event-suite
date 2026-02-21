@@ -17,6 +17,7 @@ export const cesLasVegas2026Event: EventData = {
   id: "ces-las-vegas-2026",
   config: {
     eventName: "CES Las Vegas 2026",
+    buildStart: "2026-01-05",
     currency: "USD",
     locale: "en-US",
     userDisplayName: "Ops Manager",

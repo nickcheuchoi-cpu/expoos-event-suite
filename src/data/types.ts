@@ -6,6 +6,7 @@
 
 export interface EventConfig {
   eventName: string;
+  buildStart: string; // ISO date string e.g. "2026-03-08"
   currency: string;
   locale: string;
   userDisplayName: string;

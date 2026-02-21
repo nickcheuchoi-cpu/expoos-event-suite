@@ -224,6 +224,7 @@ export const euroShop2026Event: EventData = {
   id: "euroshop-2026",
   config: {
     eventName: "EuroShop 2026",
+    buildStart: "2026-02-16",
     currency: "EUR",
     locale: "de-DE",
     userDisplayName: "Ops Manager",

@@ -17,6 +17,7 @@ export const hannoverMesse2026Event: EventData = {
   id: "hannover-messe-2026",
   config: {
     eventName: "Hannover Messe 2026",
+    buildStart: "2026-03-08",
     currency: "EUR",
     locale: "de-DE",
     userDisplayName: "Ops Manager",

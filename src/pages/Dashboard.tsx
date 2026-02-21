@@ -2,7 +2,11 @@ import {
   Zap,
   ArrowUpRight,
   TrendingUp,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
 } from "lucide-react";
+import { useMemo } from "react";
 import { useEvent } from "@/context/EventContext";
 
 const statusColors = {
@@ -29,6 +33,23 @@ export default function Dashboard() {
   const { event, assignedCandidateName } = useEvent();
   const { kpis, healthBars, aiInsights, config } = event;
 
+  const countdown = useMemo(() => {
+    const now  = new Date();
+    const build = new Date(config.buildStart);
+    const diffMs = build.getTime() - now.getTime();
+    const isPast = diffMs < 0;
+    const abs  = Math.abs(diffMs);
+    const days  = Math.floor(abs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((abs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins  = Math.floor((abs % (1000 * 60 * 60)) / (1000 * 60));
+    return { isPast, days, hours, mins };
+  }, [config.buildStart]);
+
+  const urgency = countdown.isPast ? "past"
+    : countdown.days < 7  ? "critical"
+    : countdown.days < 21 ? "warning"
+    : "safe";
+
   const displayKpis = kpis.map((kpi) => {
     if (kpi.label === "Staffing" && assignedCandidateName) {
       const newValue = patchedStaffingValue(String(kpi.value));
@@ -48,6 +69,62 @@ export default function Dashboard() {
         <div className="badge-engine">
           <Zap className="w-2.5 h-2.5" /> Live Monitoring
         </div>
+      </div>
+
+      {/* Build Countdown */}
+      <div className={`rounded-xl border px-6 py-4 transition-colors ${
+        urgency === "past"     ? "border-success/30 bg-success/5" :
+        urgency === "critical" ? "border-destructive/30 bg-destructive/5" :
+        urgency === "warning"  ? "border-warning/30 bg-warning/5" :
+                                 "border-info/30 bg-info/5"
+      }`}>
+        {countdown.isPast ? (
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                Build completed — {countdown.days} {countdown.days === 1 ? "day" : "days"} ago
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">{config.eventName}</p>
+            </div>
+            <div className="ml-auto badge-engine shrink-0">
+              <Zap className="w-2.5 h-2.5" /> Post-event
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-6 flex-wrap">
+            <div className="flex items-center gap-2">
+              {urgency === "critical"
+                ? <AlertTriangle className={`w-5 h-5 shrink-0 text-destructive`} />
+                : <Clock className={`w-5 h-5 shrink-0 ${urgency === "warning" ? "text-warning" : "text-info"}`} />
+              }
+              <span className="text-sm font-semibold text-foreground">Build starts in</span>
+            </div>
+            <div className="flex items-end gap-5">
+              <div className="text-center">
+                <p className={`text-3xl font-bold tabular-nums leading-none ${
+                  urgency === "critical" ? "text-destructive" :
+                  urgency === "warning"  ? "text-warning" : "text-info"
+                }`}>{countdown.days}</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">days</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold tabular-nums leading-none text-foreground/60">{String(countdown.hours).padStart(2, "0")}</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">hours</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold tabular-nums leading-none text-foreground/40">{String(countdown.mins).padStart(2, "0")}</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">min</p>
+              </div>
+            </div>
+            <div className="ml-auto shrink-0">
+              <p className="text-xs text-muted-foreground text-right">{config.eventName}</p>
+              <p className="text-[11px] font-medium text-foreground text-right mt-0.5">
+                {new Date(config.buildStart).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* KPI Cards */}
