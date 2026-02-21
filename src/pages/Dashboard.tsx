@@ -17,9 +17,25 @@ const statusBg = {
   info: "bg-info/10",
 } as const;
 
+function patchedStaffingValue(value: string): string {
+  // Increment the filled count e.g. "14/15" → "15/15"
+  const match = value.match(/^(\d+)\/(\d+)$/);
+  if (!match) return value;
+  const filled = Math.min(parseInt(match[1]) + 1, parseInt(match[2]));
+  return `${filled}/${match[2]}`;
+}
+
 export default function Dashboard() {
-  const { event } = useEvent();
+  const { event, assignedCandidateName } = useEvent();
   const { kpis, healthBars, aiInsights, config } = event;
+
+  const displayKpis = kpis.map((kpi) => {
+    if (kpi.label === "Staffing" && assignedCandidateName) {
+      const newValue = patchedStaffingValue(String(kpi.value));
+      return { ...kpi, value: newValue, status: "success" as const, badge: "✔️" };
+    }
+    return kpi;
+  });
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -36,7 +52,7 @@ export default function Dashboard() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {kpis.map((kpi, i) => (
+        {displayKpis.map((kpi, i) => (
           <div
             key={kpi.label}
             className="glass-card p-4 animate-fade-in-delayed"
