@@ -1,94 +1,135 @@
 import {
-  CheckCircle2,
-  ShieldCheck,
-  DollarSign,
-  Users,
-  AlertTriangle,
   Zap,
   ArrowUpRight,
   TrendingUp,
+  Clock,
+  CheckCircle2,
+  AlertTriangle,
 } from "lucide-react";
-
-const kpis = [
-  {
-    label: "Design Status",
-    value: "Approved",
-    icon: CheckCircle2,
-    status: "success" as const,
-    badge: "✔️",
-  },
-  {
-    label: "Compliance Score",
-    value: "87%",
-    icon: ShieldCheck,
-    status: "info" as const,
-    trend: "+3%",
-  },
-  {
-    label: "Cost Estimation",
-    value: "Completed",
-    icon: DollarSign,
-    status: "success" as const,
-    badge: "✔️",
-  },
-  {
-    label: "Staffing",
-    value: "14/15",
-    icon: Users,
-    status: "warning" as const,
-    sub: "Assigned",
-  },
-  {
-    label: "Risk Level",
-    value: "Medium",
-    icon: AlertTriangle,
-    status: "warning" as const,
-  },
-];
-
-const healthBars = [
-  { label: "Compliance", value: 87, color: "bg-info" },
-  { label: "Budget", value: 72, color: "bg-success" },
-  { label: "Staffing", value: 93, color: "bg-primary" },
-  { label: "Risk", value: 55, color: "bg-warning" },
-];
-
-const aiInsights = [
-  { text: "2 compliance warnings require attention.", priority: "high" },
-  { text: "Senior certified builder required due to 5.5m truss.", priority: "high" },
-  { text: "Post-event evaluation scheduled automatically.", priority: "low" },
-  { text: "Staffing risk reduced after recent assignment.", priority: "medium" },
-];
+import { useMemo } from "react";
+import { useEvent } from "@/context/EventContext";
 
 const statusColors = {
   success: "status-success",
   warning: "status-warning",
   info: "status-info",
-};
+} as const;
 
 const statusBg = {
   success: "bg-success/10",
   warning: "bg-warning/10",
   info: "bg-info/10",
-};
+} as const;
+
+function patchedStaffingValue(value: string): string {
+  // Increment the filled count e.g. "14/15" → "15/15"
+  const match = value.match(/^(\d+)\/(\d+)$/);
+  if (!match) return value;
+  const filled = Math.min(parseInt(match[1]) + 1, parseInt(match[2]));
+  return `${filled}/${match[2]}`;
+}
 
 export default function Dashboard() {
+  const { event, assignedCandidateName } = useEvent();
+  const { kpis, healthBars, aiInsights, config } = event;
+
+  const countdown = useMemo(() => {
+    const now  = new Date();
+    const build = new Date(config.buildStart);
+    const diffMs = build.getTime() - now.getTime();
+    const isPast = diffMs < 0;
+    const abs  = Math.abs(diffMs);
+    const days  = Math.floor(abs / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((abs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins  = Math.floor((abs % (1000 * 60 * 60)) / (1000 * 60));
+    return { isPast, days, hours, mins };
+  }, [config.buildStart]);
+
+  const urgency = countdown.isPast ? "past"
+    : countdown.days < 7  ? "critical"
+    : countdown.days < 21 ? "warning"
+    : "safe";
+
+  const displayKpis = kpis.map((kpi) => {
+    if (kpi.label === "Staffing" && assignedCandidateName) {
+      const newValue = patchedStaffingValue(String(kpi.value));
+      return { ...kpi, value: newValue, status: "success" as const, badge: "✔️" };
+    }
+    return kpi;
+  });
+
   return (
     <div className="space-y-6 animate-slide-up">
       {/* Page header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground">Event Overview</h1>
-          <p className="text-sm text-muted-foreground mt-1">EuroShop 2026 — Real-time operational status</p>
+          <p className="text-sm text-muted-foreground mt-1">{config.eventName} — Real-time operational status</p>
         </div>
         <div className="badge-engine">
           <Zap className="w-2.5 h-2.5" /> Live Monitoring
         </div>
       </div>
 
+      {/* Build Countdown */}
+      <div className={`rounded-xl border px-6 py-4 transition-colors ${
+        urgency === "past"     ? "border-success/30 bg-success/5" :
+        urgency === "critical" ? "border-destructive/30 bg-destructive/5" :
+        urgency === "warning"  ? "border-warning/30 bg-warning/5" :
+                                 "border-info/30 bg-info/5"
+      }`}>
+        {countdown.isPast ? (
+          <div className="flex items-center gap-3">
+            <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
+            <div>
+              <p className="text-sm font-semibold text-foreground">
+                Build completed — {countdown.days} {countdown.days === 1 ? "day" : "days"} ago
+              </p>
+              <p className="text-xs text-muted-foreground mt-0.5">{config.eventName}</p>
+            </div>
+            <div className="ml-auto badge-engine shrink-0">
+              <Zap className="w-2.5 h-2.5" /> Post-event
+            </div>
+          </div>
+        ) : (
+          <div className="flex items-center gap-6 flex-wrap">
+            <div className="flex items-center gap-2">
+              {urgency === "critical"
+                ? <AlertTriangle className={`w-5 h-5 shrink-0 text-destructive`} />
+                : <Clock className={`w-5 h-5 shrink-0 ${urgency === "warning" ? "text-warning" : "text-info"}`} />
+              }
+              <span className="text-sm font-semibold text-foreground">Build starts in</span>
+            </div>
+            <div className="flex items-end gap-5">
+              <div className="text-center">
+                <p className={`text-3xl font-bold tabular-nums leading-none ${
+                  urgency === "critical" ? "text-destructive" :
+                  urgency === "warning"  ? "text-warning" : "text-info"
+                }`}>{countdown.days}</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">days</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold tabular-nums leading-none text-foreground/60">{String(countdown.hours).padStart(2, "0")}</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">hours</p>
+              </div>
+              <div className="text-center">
+                <p className="text-3xl font-bold tabular-nums leading-none text-foreground/40">{String(countdown.mins).padStart(2, "0")}</p>
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">min</p>
+              </div>
+            </div>
+            <div className="ml-auto shrink-0">
+              <p className="text-xs text-muted-foreground text-right">{config.eventName}</p>
+              <p className="text-[11px] font-medium text-foreground text-right mt-0.5">
+                {new Date(config.buildStart).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-        {kpis.map((kpi, i) => (
+        {displayKpis.map((kpi, i) => (
           <div
             key={kpi.label}
             className="glass-card p-4 animate-fade-in-delayed"

@@ -1,8 +1,7 @@
 import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
+import { EventProvider } from "./context/EventContext";
 import Layout from "./components/Layout";
 import Dashboard from "./pages/Dashboard";
 import DesignValidation from "./pages/DesignValidation";
@@ -14,14 +13,11 @@ import EventHistory from "./pages/EventHistory";
 import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
-
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
+  <TooltipProvider>
+    <Toaster />
+    <HashRouter>
+      <EventProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<Dashboard />} />
@@ -35,9 +31,9 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+      </EventProvider>
+      </HashRouter>
+  </TooltipProvider>
 );
 
 export default App;
