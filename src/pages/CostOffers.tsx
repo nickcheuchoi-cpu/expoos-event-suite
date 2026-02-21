@@ -6,13 +6,54 @@ import {
   Zap,
   TrendingDown,
   RefreshCw,
+  Download,
+  Eye,
+  X,
 } from "lucide-react";
+import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { useEvent } from "@/context/EventContext";
+
+interface Toast {
+  id: number;
+  message: string;
+  type: "info" | "success";
+}
+
+let toastCounter = 0;
 
 export default function CostOffers() {
   const { event } = useEvent();
   const { costBreakdown, budgetUtilization, offerDocuments, config } = event;
   const total = costBreakdown.reduce((sum, c) => sum + c.amount, 0);
+  const [toasts, setToasts] = useState<Toast[]>([]);
+  const [generatingOffer, setGeneratingOffer] = useState(false);
+
+  const addToast = useCallback((message: string, type: Toast["type"] = "info") => {
+    const id = ++toastCounter;
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => setToasts((prev) => prev.filter((t) => t.id !== id)), 3500);
+  }, []);
+
+  const removeToast = (id: number) => setToasts((prev) => prev.filter((t) => t.id !== id));
+
+  const handleDownload = (doc: string) => {
+    addToast(`Preparing "${doc}" for download…`);
+  };
+
+  const handlePreview = (doc: string) => {
+    addToast(`Opening "${doc}" in document viewer…`);
+  };
+
+  const handleGenerateOffer = async () => {
+    setGeneratingOffer(true);
+    await new Promise((r) => setTimeout(r, 1800));
+    setGeneratingOffer(false);
+    addToast("Revised offer generated and sent to client.", "success");
+  };
+
+  // Reset toasts when event changes
+  useEffect(() => { setToasts([]); }, [event.id]);
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -75,9 +116,13 @@ export default function CostOffers() {
               </div>
             </div>
 
-            <button className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg gradient-primary text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
-              <RefreshCw className="w-4 h-4" />
-              Generate Revised Offer
+            <button
+              onClick={handleGenerateOffer}
+              disabled={generatingOffer}
+              className="mt-5 w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg gradient-primary text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity disabled:opacity-60"
+            >
+              <RefreshCw className={`w-4 h-4 ${generatingOffer ? "animate-spin" : ""}`} />
+              {generatingOffer ? "Generating…" : "Generate Revised Offer"}
             </button>
           </div>
 
@@ -95,21 +140,69 @@ export default function CostOffers() {
           </div>
 
           <div className="glass-card p-5">
-            <div className="flex items-center gap-2 mb-3">
+            <div className="flex items-center gap-2 mb-4">
               <FileText className="w-4 h-4 text-primary" />
               <h3 className="text-sm font-semibold text-foreground">Documents</h3>
             </div>
             <div className="space-y-2">
               {offerDocuments.map((doc) => (
-                <div key={doc} className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 border border-border/50 text-xs text-foreground hover:bg-muted/40 transition-colors cursor-pointer">
-                  <FileText className="w-3.5 h-3.5 text-muted-foreground" />
-                  {doc}
+                <div
+                  key={doc}
+                  className="flex items-center gap-2 p-2 rounded-lg bg-muted/20 border border-border/50 hover:bg-muted/40 transition-colors group"
+                >
+                  <FileText className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
+                  <span className="text-xs text-foreground flex-1 truncate">{doc}</span>
+                  <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <button
+                      onClick={() => handlePreview(doc)}
+                      title="Preview"
+                      className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <Eye className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => handleDownload(doc)}
+                      title="Download"
+                      className="p-1 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                      <Download className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
       </div>
+
+      {/* Toast stack */}
+      {toasts.length > 0 && createPortal(
+        <div className="fixed bottom-6 right-6 z-50 flex flex-col gap-2 items-end">
+          {toasts.map((t) => (
+            <div
+              key={t.id}
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg border shadow-xl text-sm font-medium animate-slide-up max-w-xs ${
+                t.type === "success"
+                  ? "bg-success/10 border-success/30 text-success"
+                  : "bg-popover border-border text-popover-foreground"
+              }`}
+            >
+              {t.type === "success"
+                ? <CheckCircle2 className="w-4 h-4 shrink-0" />
+                : <FileText className="w-4 h-4 text-primary shrink-0" />
+              }
+              <span className="flex-1">{t.message}</span>
+              <button
+                onClick={() => removeToast(t.id)}
+                className="ml-1 text-muted-foreground hover:text-foreground transition-colors"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          ))}
+        </div>,
+        document.body
+      )}
     </div>
   );
 }
