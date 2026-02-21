@@ -167,4 +167,11 @@ export const cesLasVegas2026Event: EventData = {
     { positive: false, text: "AV power draw exceeded estimate by 12% — dedicated circuit needed." },
     { positive: false, text: "Branded furnishings arrived 4 hours late on Day 1 of build." },
   ],
+  narrativeSummary: `CES Las Vegas 2026 was the smoothest execution of the three events benchmarked this period. Booth T-12 in the Central Hall delivered on its brief — a compact, high-impact technology showcase that held its own against neighbouring tier-one exhibitors and drove qualified visitor engagement across all three public days.
+
+The planning phase benefited directly from lessons applied after previous shows. The compliance submission went in early, was approved without amendment, and the team entered build week with full confidence in the design. All eight staffing positions were confirmed well ahead of the deadline — a notable improvement on the previous year's last-minute scramble.
+
+Two minor issues surfaced during the event itself. The AV power draw ran 12% above the estimated circuit load, a consequence of underestimating the combined draw of the interactive product demos. No outage occurred, but the incident was close enough to uncomfortable that a dedicated 40A circuit has now been added to the standard planning template. The branded furnishings also arrived four hours behind schedule on Day 1, though they were in place before the official opening and the client was unaware.
+
+The client expressed strong satisfaction with both the design quality and the on-site team's responsiveness. This event should be used as the planning baseline for future CES cycles.`,
 };

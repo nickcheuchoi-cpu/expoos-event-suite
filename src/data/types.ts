@@ -37,6 +37,7 @@ export interface EventData {
   actions: ActionItem[];
   confidenceSections: ConfidenceSection[];
   executiveSummary: SummaryPoint[];
+  narrativeSummary: string;
   milestones: Milestone[];
   notifications: Notification[];
 }

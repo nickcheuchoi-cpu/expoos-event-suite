@@ -251,6 +251,13 @@ export const euroShop2026Event: EventData = {
   actions,
   confidenceSections,
   executiveSummary,
+  narrativeSummary: `EuroShop 2026 marked another successful large-format deployment, though not without its share of last-minute pressure. The stand — a 72m² double-deck configuration in Hall 10 — drew consistent visitor traffic across all four days, with client satisfaction scores landing at 4.7 out of 5.0, comfortably ahead of the 4.5 KPI target.
+
+Behind the scenes, the week leading up to build day carried significant tension. The truss rigging approval arrived three days late, requiring direct escalation to the venue's technical team. In parallel, the original senior builder called in sick 48 hours before build start — a scenario the AI matching system handled autonomously, surfacing a 94% match replacement candidate within minutes. The transition was seamless enough that the client never noticed.
+
+The one area that fell short of expectation was the LED wall delivery. A last-minute transport rerouting by the supplier added three hours to the build timeline, compressing the installation window and requiring the crew to work an extended shift. The materials team has since flagged this supplier for risk review, and a backup logistics partner has been identified for future events.
+
+Overall, EuroShop 2026 reinforced the value of real-time operational monitoring. The issues encountered were real, but none were catastrophic — because the system caught them early enough to act.`,
   milestones,
   notifications,
 };
