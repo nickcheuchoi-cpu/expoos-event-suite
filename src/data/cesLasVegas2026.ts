@@ -168,6 +168,25 @@ export const cesLasVegas2026Event: EventData = {
     { positive: false, text: "AV power draw exceeded estimate by 12% — dedicated circuit needed." },
     { positive: false, text: "Branded furnishings arrived 4 hours late on Day 1 of build." },
   ],
+  staffAlert: {
+    workerName: "Mike Rodriguez",
+    workerInitials: "MR",
+    senderSubtitle: "last seen today at 07:23",
+    role: "AV Lead Technician",
+    message: "Hey team, woke up with a severe migraine and vertigo — can't safely operate the AV equipment today. Really sorry about the timing. 😖",
+    time: "07:21",
+  },
+  supplierAlert: {
+    supplierName: "Pacific Freight LLC",
+    supplierInitials: "PF",
+    senderSubtitle: "last seen today at 08:15",
+    message: "Hi, our truck got caught in a multi-vehicle accident on I-15 this morning. Display fixtures and branded furnishings are on that load — looking at a 2-day delay minimum. Very sorry. 🚚",
+    time: "08:11",
+    impactLabel: "2 deliveries at risk",
+    impactDetail: "Display Fixtures · Branded Furnishings — 2-day slip, Day 1 setup at risk",
+    draftedReply: "Hi Pacific Freight, understood. Please send the incident report and updated ETA as soon as possible — we need delivery by 10:00 on the revised date to make the opening. Keep us posted.",
+    sentConfirmation: "Reply sent to Pacific Freight LLC. Awaiting revised ETA. Setup team notified of 2-day delay.",
+  },
   narrativeSummary: `CES Las Vegas 2026 was the smoothest execution of the three events benchmarked this period. Booth T-12 in the Central Hall delivered on its brief — a compact, high-impact technology showcase that held its own against neighbouring tier-one exhibitors and drove qualified visitor engagement across all three public days.
 
 The planning phase benefited directly from lessons applied after previous shows. The compliance submission went in early, was approved without amendment, and the team entered build week with full confidence in the design. All eight staffing positions were confirmed well ahead of the deadline — a notable improvement on the previous year's last-minute scramble.

@@ -173,6 +173,25 @@ export const hannoverMesse2026Event: EventData = {
     { positive: false, text: "Budget contingency at 88% — any supplier switch will breach ceiling." },
     { positive: true,  text: "Initial stand design submitted on time and accepted by Deutsche Messe." },
   ],
+  staffAlert: {
+    workerName: "Stefan Weber",
+    workerInitials: "SW",
+    senderSubtitle: "last seen today at 05:54",
+    role: "Heavy Assembly Specialist",
+    message: "Hi team, bad stomach bug since last night, still running a fever this morning. No way I can come in tomorrow. Sorry for the short notice. 😔",
+    time: "05:51",
+  },
+  supplierAlert: {
+    supplierName: "Kühne Logistics GmbH",
+    supplierInitials: "KL",
+    senderSubtitle: "last seen today at 06:38",
+    message: "Guten Morgen, we must inform you that flooding in our Hamburg depot has affected the steel framework and modular partition shipment. Earliest dispatch is now 1 day later. We sincerely apologize. 🏭",
+    time: "06:33",
+    impactLabel: "1 delivery delayed",
+    impactDetail: "Steel Framework · Modular Partitions — 1-day slip, rigging window tightened",
+    draftedReply: "Hi Kühne, thank you for the update. Please confirm the exact new dispatch time — we need the steel framework on-site by 07:00 to maintain our rigging schedule. Send written confirmation as soon as possible.",
+    sentConfirmation: "Reply sent to Kühne Logistics GmbH. Awaiting updated dispatch window. Build team notified of 1-day delay.",
+  },
   narrativeSummary: `Hannover Messe 2026 is the most operationally complex event currently in planning, and as of today it carries the highest risk profile in the portfolio. The stand — a 120m² island build in Hall 9 — requires B1-certified fire-retardant panels, neighbour consent from an adjacent occupant, and a full venue-issued build permit before assembly can begin. None of these are yet in hand.
 
 The most urgent issue is the material certification gap. The primary supplier's B1 certificate lapsed in February 2025, making their panels ineligible under Deutsche Messe's fire safety rules. A switch to a certified backup supplier is in motion, but it introduces cost pressure at a moment when the budget contingency has already reached 88%. There is very little room for further variance.

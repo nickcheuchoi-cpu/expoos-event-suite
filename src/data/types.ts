@@ -28,6 +28,8 @@ export interface EventData {
   budgetUtilization: number;
   offerDocuments: string[];
   deliverySchedule: DeliveryItem[];
+  staffAlert: StaffAlert;
+  supplierAlert: SupplierAlert;
   candidates: Candidate[];
   matchBreakdown: MatchCriterion[];
   shifts: Shift[];
@@ -98,6 +100,29 @@ export interface DeliveryItem {
   item: string;
   date: string;
   risk: boolean;
+}
+
+// --- Staff & Supplier Alerts ---
+
+export interface StaffAlert {
+  workerName: string;
+  workerInitials: string;
+  senderSubtitle: string; // shown under the name in the WA header
+  role: string;           // e.g. "Senior Builder"
+  message: string;
+  time: string;           // e.g. "06:43"
+}
+
+export interface SupplierAlert {
+  supplierName: string;
+  supplierInitials: string;
+  senderSubtitle: string;
+  message: string;
+  time: string;
+  impactLabel: string;    // e.g. "2 deliveries delayed"
+  impactDetail: string;   // detail line shown under the label
+  draftedReply: string;
+  sentConfirmation: string;
 }
 
 // --- Resource Planning ---

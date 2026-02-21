@@ -17,7 +17,7 @@ type MatchState = "idle" | "matching" | "matched";
 
 export default function ResourcePlanning() {
   const { event, assignedCandidateName, setAssignedCandidate } = useEvent();
-  const { candidates, matchBreakdown, shifts, shiftLabels } = event;
+  const { candidates, matchBreakdown, shifts, shiftLabels, staffAlert } = event;
   const [confirming, setConfirming] = useState<string | null>(null);
   const [matchState, setMatchState] = useState<MatchState>("idle");
   const [scanCount, setScanCount] = useState(0);
@@ -76,19 +76,19 @@ export default function ResourcePlanning() {
               <div className="rounded-xl overflow-hidden border border-border/40">
                 <div className="flex items-center gap-2.5 px-3 py-2.5" style={{ backgroundColor: "#075e54" }}>
                   <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                    MJ
+                    {staffAlert.workerInitials}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-white leading-tight">Mark Jansen</p>
-                    <p className="text-[10px] leading-tight" style={{ color: "rgba(255,255,255,0.65)" }}>last seen today at 06:42</p>
+                    <p className="text-xs font-semibold text-white leading-tight">{staffAlert.workerName}</p>
+                    <p className="text-[10px] leading-tight" style={{ color: "rgba(255,255,255,0.65)" }}>{staffAlert.senderSubtitle}</p>
                   </div>
                 </div>
                 <div className="p-3 flex justify-end" style={{ backgroundColor: "#0b141a" }}>
                   <div className="max-w-[90%] px-3 py-2 rounded-lg rounded-tr-none" style={{ backgroundColor: "#005c4b" }}>
                     <p className="text-xs leading-relaxed" style={{ color: "#e9edef" }}>
-                      Hey guys, really sorry. Woke up sick this morning, fever won't go down. Can't make it to the build tomorrow. 🤒
+                      {staffAlert.message}
                     </p>
-                    <p className="text-[10px] mt-1 text-right" style={{ color: "#8696a0" }}>06:43 ✓✓</p>
+                    <p className="text-[10px] mt-1 text-right" style={{ color: "#8696a0" }}>{staffAlert.time} ✓✓</p>
                   </div>
                 </div>
               </div>
@@ -99,7 +99,7 @@ export default function ResourcePlanning() {
                   <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                   <div>
                     <p className="text-xs font-semibold text-foreground">Staffing gap detected</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">Senior Builder — role now unfilled for build start</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{staffAlert.role} — role now unfilled for build start</p>
                   </div>
                 </div>
 

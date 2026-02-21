@@ -15,7 +15,7 @@ type SupplierAlertState = "idle" | "drafting" | "drafted" | "sent";
 
 export default function MaterialsManagement() {
   const { event } = useEvent();
-  const { inventory, deliverySchedule } = event;
+  const { inventory, deliverySchedule, supplierAlert } = event;
   const [alertState, setAlertState] = useState<SupplierAlertState>("idle");
 
   // Reset on event change
@@ -54,11 +54,11 @@ export default function MaterialsManagement() {
               <div className="rounded-xl overflow-hidden border border-border/40">
                 <div className="flex items-center gap-2.5 px-3 py-2.5" style={{ backgroundColor: "#075e54" }}>
                   <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
-                    VD
+                    {supplierAlert.supplierInitials}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-white leading-tight">Van Dijk Transport</p>
-                    <p className="text-[10px] leading-tight" style={{ color: "rgba(255,255,255,0.65)" }}>last seen today at 07:18</p>
+                    <p className="text-xs font-semibold text-white leading-tight">{supplierAlert.supplierName}</p>
+                    <p className="text-[10px] leading-tight" style={{ color: "rgba(255,255,255,0.65)" }}>{supplierAlert.senderSubtitle}</p>
                   </div>
                 </div>
                 {/* Incoming message bubble */}
@@ -66,9 +66,9 @@ export default function MaterialsManagement() {
                   <div className="flex justify-start">
                     <div className="max-w-[90%] px-3 py-2 rounded-lg rounded-tl-none" style={{ backgroundColor: "#202c33" }}>
                       <p className="text-xs leading-relaxed" style={{ color: "#e9edef" }}>
-                        Hi, unfortunately our truck had a breakdown on the A2 near Utrecht. Delivery of LED Wall Panels and Flooring will be delayed by 2 days. Very sorry for the inconvenience. 🚛
+                        {supplierAlert.message}
                       </p>
-                      <p className="text-[10px] mt-1" style={{ color: "#8696a0" }}>07:12</p>
+                      <p className="text-[10px] mt-1" style={{ color: "#8696a0" }}>{supplierAlert.time}</p>
                     </div>
                   </div>
                   {/* AI-drafted outgoing reply */}
@@ -76,7 +76,7 @@ export default function MaterialsManagement() {
                     <div className="flex justify-end animate-slide-up">
                       <div className="max-w-[90%] px-3 py-2 rounded-lg rounded-tr-none" style={{ backgroundColor: "#005c4b" }}>
                         <p className="text-xs leading-relaxed" style={{ color: "#e9edef" }}>
-                          Hi Van Dijk, understood. Please confirm the new delivery date ASAP — we need arrival before 14:00 to keep the build on schedule. Send written confirmation when possible. Thanks.
+                          {supplierAlert.draftedReply}
                         </p>
                         <p className="text-[10px] mt-1 text-right" style={{ color: "#8696a0" }}>Just now ✓</p>
                       </div>
@@ -90,8 +90,8 @@ export default function MaterialsManagement() {
                 <div className="flex items-start gap-2 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
                   <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
                   <div>
-                    <p className="text-xs font-semibold text-foreground">2 deliveries delayed</p>
-                    <p className="text-[11px] text-muted-foreground mt-0.5">LED Wall Panels · Flooring — 2-day slip, build buffer reduced to 0</p>
+                    <p className="text-xs font-semibold text-foreground">{supplierAlert.impactLabel}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">{supplierAlert.impactDetail}</p>
                   </div>
                 </div>
 
@@ -143,8 +143,8 @@ export default function MaterialsManagement() {
               <div className="flex items-center gap-3">
                 <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
                 <div>
-                  <p className="text-sm font-semibold text-foreground">Reply sent to Van Dijk Transport</p>
-                  <p className="text-xs text-muted-foreground">Awaiting delivery confirmation. Team notified of 2-day delay.</p>
+                  <p className="text-sm font-semibold text-foreground">Reply sent to {supplierAlert.supplierName}</p>
+                  <p className="text-xs text-muted-foreground">{supplierAlert.sentConfirmation}</p>
                 </div>
               </div>
               <button
