@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { NavLink, useLocation } from "react-router-dom";
 import { useEvent } from "@/context/EventContext";
+import EventChat from "@/components/EventChat";
 import {
   LayoutDashboard,
   PenTool,
@@ -299,6 +300,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+
+      {/* Floating AI chat — available on every page */}
+      <EventChat />
     </div>
   );
 }

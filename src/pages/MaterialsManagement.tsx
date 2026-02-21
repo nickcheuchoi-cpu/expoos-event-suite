@@ -4,13 +4,29 @@ import {
   CheckCircle2,
   Zap,
   Truck,
-  Clock,
+  RefreshCw,
+  Send,
+  MessageSquare,
 } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useEvent } from "@/context/EventContext";
+
+type SupplierAlertState = "idle" | "drafting" | "drafted" | "sent";
 
 export default function MaterialsManagement() {
   const { event } = useEvent();
   const { inventory, deliverySchedule } = event;
+  const [alertState, setAlertState] = useState<SupplierAlertState>("idle");
+
+  // Reset on event change
+  useEffect(() => { setAlertState("idle"); }, [event.id]);
+
+  // Auto-advance drafting → drafted
+  useEffect(() => {
+    if (alertState !== "drafting") return;
+    const t = setTimeout(() => setAlertState("drafted"), 2500);
+    return () => clearTimeout(t);
+  }, [alertState]);
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -19,14 +35,129 @@ export default function MaterialsManagement() {
         <p className="text-sm text-muted-foreground mt-1">Inventory tracking and logistics coordination</p>
       </div>
 
-      {/* Warning */}
-      <div className="flex items-center gap-3 p-4 rounded-lg border border-warning/30 bg-warning/5">
-        <Clock className="w-5 h-5 text-warning shrink-0" />
-        <div>
-          <p className="text-sm font-semibold text-foreground">2 items arriving 1 day before build.</p>
-          <p className="text-xs text-muted-foreground mt-0.5">Tight delivery window may impact build schedule.</p>
+      {/* ── Supplier alert panel ──────────────────────────────────── */}
+      <div className="glass-card-elevated overflow-hidden">
+        <div className="p-4 border-b border-border flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="w-4 h-4 text-warning" />
+            <span className="text-sm font-semibold text-foreground">Supplier Alert</span>
+          </div>
+          <div className="badge-ai"><Zap className="w-2.5 h-2.5" /> AI Reply Draft</div>
         </div>
+
+        {/* Active: show two-col layout */}
+        {alertState !== "sent" && (
+          <div className="p-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+              {/* WhatsApp incoming message from supplier */}
+              <div className="rounded-xl overflow-hidden border border-border/40">
+                <div className="flex items-center gap-2.5 px-3 py-2.5" style={{ backgroundColor: "#075e54" }}>
+                  <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-xs font-bold shrink-0">
+                    VD
+                  </div>
+                  <div>
+                    <p className="text-xs font-semibold text-white leading-tight">Van Dijk Transport</p>
+                    <p className="text-[10px] leading-tight" style={{ color: "rgba(255,255,255,0.65)" }}>last seen today at 07:18</p>
+                  </div>
+                </div>
+                {/* Incoming message bubble */}
+                <div className="p-3 space-y-2" style={{ backgroundColor: "#0b141a" }}>
+                  <div className="flex justify-start">
+                    <div className="max-w-[90%] px-3 py-2 rounded-lg rounded-tl-none" style={{ backgroundColor: "#202c33" }}>
+                      <p className="text-xs leading-relaxed" style={{ color: "#e9edef" }}>
+                        Hi, unfortunately our truck had a breakdown on the A2 near Utrecht. Delivery of LED Wall Panels and Flooring will be delayed by 2 days. Very sorry for the inconvenience. 🚛
+                      </p>
+                      <p className="text-[10px] mt-1" style={{ color: "#8696a0" }}>07:12</p>
+                    </div>
+                  </div>
+                  {/* AI-drafted outgoing reply */}
+                  {alertState === "drafted" && (
+                    <div className="flex justify-end animate-slide-up">
+                      <div className="max-w-[90%] px-3 py-2 rounded-lg rounded-tr-none" style={{ backgroundColor: "#005c4b" }}>
+                        <p className="text-xs leading-relaxed" style={{ color: "#e9edef" }}>
+                          Hi Van Dijk, understood. Please confirm the new delivery date ASAP — we need arrival before 14:00 to keep the build on schedule. Send written confirmation when possible. Thanks.
+                        </p>
+                        <p className="text-[10px] mt-1 text-right" style={{ color: "#8696a0" }}>Just now ✓</p>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* System response panel */}
+              <div className="flex flex-col justify-center gap-3">
+                <div className="flex items-start gap-2 p-3 rounded-lg border border-destructive/30 bg-destructive/5">
+                  <AlertTriangle className="w-4 h-4 text-destructive shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-xs font-semibold text-foreground">2 deliveries delayed</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5">LED Wall Panels · Flooring — 2-day slip, build buffer reduced to 0</p>
+                  </div>
+                </div>
+
+                {alertState === "idle" && (
+                  <button
+                    onClick={() => setAlertState("drafting")}
+                    className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg gradient-primary text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+                  >
+                    <MessageSquare className="w-4 h-4" /> Draft reply
+                  </button>
+                )}
+
+                {alertState === "drafting" && (
+                  <div className="flex items-start gap-2 p-3 rounded-lg border border-primary/20 bg-primary/5 animate-slide-up">
+                    <RefreshCw className="w-4 h-4 text-primary shrink-0 mt-0.5 animate-spin" />
+                    <div>
+                      <p className="text-xs font-semibold text-foreground">Drafting supplier reply…</p>
+                      <p className="text-[11px] text-muted-foreground">Checking build schedule impact and deadlines</p>
+                    </div>
+                  </div>
+                )}
+
+                {alertState === "drafted" && (
+                  <div className="flex flex-col gap-2 animate-slide-up">
+                    <p className="text-[11px] text-muted-foreground">AI draft ready — review and send</p>
+                    <button
+                      onClick={() => setAlertState("sent")}
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg gradient-primary text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
+                    >
+                      <Send className="w-4 h-4" /> Send reply
+                    </button>
+                    <button
+                      onClick={() => setAlertState("idle")}
+                      className="text-xs text-center text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors"
+                    >
+                      Reset
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Sent confirmation */}
+        {alertState === "sent" && (
+          <div className="p-5 animate-slide-up">
+            <div className="flex items-center justify-between p-3 rounded-lg border border-success/30 bg-success/5">
+              <div className="flex items-center gap-3">
+                <CheckCircle2 className="w-5 h-5 text-success shrink-0" />
+                <div>
+                  <p className="text-sm font-semibold text-foreground">Reply sent to Van Dijk Transport</p>
+                  <p className="text-xs text-muted-foreground">Awaiting delivery confirmation. Team notified of 2-day delay.</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setAlertState("idle")}
+                className="text-xs text-muted-foreground hover:text-foreground underline underline-offset-2 transition-colors shrink-0 ml-4"
+              >
+                Reset
+              </button>
+            </div>
+          </div>
+        )}
       </div>
+      {/* ── End supplier alert panel ──────────────────────────────── */}
 
       {/* AI suggestion */}
       <div className="flex items-start gap-3 p-4 rounded-lg border border-primary/20 bg-primary/5">
@@ -63,7 +194,7 @@ export default function MaterialsManagement() {
         </div>
       </div>
 
-      {/* Logistics */}
+      {/* Delivery schedule */}
       <div className="glass-card p-6">
         <div className="flex items-center gap-2 mb-4">
           <Truck className="w-5 h-5 text-primary" />
