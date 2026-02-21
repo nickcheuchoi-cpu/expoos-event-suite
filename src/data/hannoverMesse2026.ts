@@ -166,4 +166,10 @@ export const hannoverMesse2026Event: EventData = {
     { id: "hm-4", title: "Neighbour consent form outstanding", body: "Booth M-88 occupant has not returned signed consent for the 4m rear wall. Deadline is March 10.", priority: "medium" as const, time: "1d ago" },
     { id: "hm-5", title: "Budget contingency nearly exhausted", body: "Utilization at 88%. Only €10,300 of contingency remaining. Any supplier switch or delay will breach budget.", priority: "high" as const, time: "1d ago" },
   ],
+  executiveSummary: [
+    { positive: false, text: "B1 fire certificate outstanding — build permit cannot be issued until resolved." },
+    { positive: false, text: "4 staff positions unfilled with 4 weeks remaining before build start." },
+    { positive: false, text: "Budget contingency at 88% — any supplier switch will breach ceiling." },
+    { positive: true,  text: "Initial stand design submitted on time and accepted by Deutsche Messe." },
+  ],
 };

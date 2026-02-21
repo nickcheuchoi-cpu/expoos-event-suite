@@ -36,6 +36,7 @@ export interface EventData {
   lessons: string[];
   actions: ActionItem[];
   confidenceSections: ConfidenceSection[];
+  executiveSummary: SummaryPoint[];
   milestones: Milestone[];
   notifications: Notification[];
 }
@@ -143,6 +144,13 @@ export interface ActionItem {
 export interface ConfidenceSection {
   label: string;
   confidence: number;
+}
+
+// --- Evaluation ---
+
+export interface SummaryPoint {
+  positive: boolean;
+  text: string;
 }
 
 // --- Notifications ---

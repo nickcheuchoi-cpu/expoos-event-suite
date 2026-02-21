@@ -161,4 +161,10 @@ export const cesLasVegas2026Event: EventData = {
     { id: "ces-2", title: "Branded furnishing delivery at risk", body: "Vendor flagged a potential 1-day delay. Booth opens in 2 days — alternative local hire sourced as backup.", priority: "low" as const, time: "6h ago" },
     { id: "ces-3", title: "Build permit approved", body: "LVCC issued standard assembly permit for Booth T-12. All clear to proceed on build day.", priority: "low" as const, time: "1d ago" },
   ],
+  executiveSummary: [
+    { positive: true,  text: "Full staffing achieved — 8/8 positions confirmed ahead of schedule." },
+    { positive: true,  text: "Compliance approved with zero amendments required." },
+    { positive: false, text: "AV power draw exceeded estimate by 12% — dedicated circuit needed." },
+    { positive: false, text: "Branded furnishings arrived 4 hours late on Day 1 of build." },
+  ],
 };

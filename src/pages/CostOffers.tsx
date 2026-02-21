@@ -9,8 +9,9 @@ import {
   Download,
   Eye,
   X,
+  Pencil,
 } from "lucide-react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { createPortal } from "react-dom";
 import { useEvent } from "@/context/EventContext";
 
@@ -25,9 +26,16 @@ let toastCounter = 0;
 export default function CostOffers() {
   const { event } = useEvent();
   const { costBreakdown, budgetUtilization, offerDocuments, config } = event;
-  const total = costBreakdown.reduce((sum, c) => sum + c.amount, 0);
+  const [amountOverrides, setAmountOverrides] = useState<Record<string, number>>({});
+  const [editingItem, setEditingItem] = useState<string | null>(null);
+  const [editingValue, setEditingValue] = useState("");
+  const editInputRef = useRef<HTMLInputElement>(null);
   const [toasts, setToasts] = useState<Toast[]>([]);
   const [generatingOffer, setGeneratingOffer] = useState(false);
+
+  const getAmount = (item: string, base: number) => amountOverrides[item] ?? base;
+  const total = costBreakdown.reduce((sum, c) => sum + getAmount(c.item, c.amount), 0);
+  const baseTotal = costBreakdown.reduce((sum, c) => sum + c.amount, 0);
 
   const addToast = useCallback((message: string, type: Toast["type"] = "info") => {
     const id = ++toastCounter;
@@ -52,8 +60,24 @@ export default function CostOffers() {
     addToast("Revised offer generated and sent to client.", "success");
   };
 
-  // Reset toasts when event changes
-  useEffect(() => { setToasts([]); }, [event.id]);
+  // Reset overrides and toasts when event changes
+  useEffect(() => { setToasts([]); setAmountOverrides({}); setEditingItem(null); }, [event.id]);
+
+  // Focus edit input when it opens
+  useEffect(() => { if (editingItem && editInputRef.current) editInputRef.current.focus(); }, [editingItem]);
+
+  const startEdit = (item: string, current: number) => {
+    setEditingItem(item);
+    setEditingValue(String(current));
+  };
+
+  const commitEdit = (item: string) => {
+    const parsed = parseFloat(editingValue);
+    if (!isNaN(parsed) && parsed >= 0) {
+      setAmountOverrides((prev) => ({ ...prev, [item]: Math.round(parsed) }));
+    }
+    setEditingItem(null);
+  };
 
   return (
     <div className="space-y-6 animate-slide-up">
@@ -71,21 +95,57 @@ export default function CostOffers() {
           </div>
 
           <div className="space-y-3">
-            {costBreakdown.map((item) => (
-              <div key={item.item} className="flex items-center justify-between p-4 rounded-lg bg-muted/20 border border-border/50">
-                <span className="text-sm font-medium text-foreground">{item.item}</span>
-                <span className="text-sm font-semibold text-foreground">
-                  €{item.amount.toLocaleString(config.locale)}
-                </span>
-              </div>
-            ))}
+            {costBreakdown.map((item) => {
+              const amount = getAmount(item.item, item.amount);
+              const isEditing = editingItem === item.item;
+              const isModified = amountOverrides[item.item] !== undefined;
+              return (
+                <div key={item.item} className={`flex items-center justify-between p-4 rounded-lg border transition-colors group ${isModified ? "bg-primary/5 border-primary/20" : "bg-muted/20 border-border/50"}`}>
+                  <span className="text-sm font-medium text-foreground">{item.item}</span>
+                  <div className="flex items-center gap-2">
+                    {isEditing ? (
+                      <input
+                        ref={editInputRef}
+                        type="number"
+                        value={editingValue}
+                        onChange={(e) => setEditingValue(e.target.value)}
+                        onBlur={() => commitEdit(item.item)}
+                        onKeyDown={(e) => { if (e.key === "Enter") commitEdit(item.item); if (e.key === "Escape") setEditingItem(null); }}
+                        className="text-sm font-semibold text-foreground bg-background border border-primary/40 rounded-md px-2 py-0.5 outline-none focus:border-primary w-28 text-right"
+                      />
+                    ) : (
+                      <>
+                        <span className={`text-sm font-semibold ${isModified ? "text-primary" : "text-foreground"}`}>
+                          €{amount.toLocaleString(config.locale)}
+                          {isModified && <span className="text-[10px] text-muted-foreground ml-1">(edited)</span>}
+                        </span>
+                        <button
+                          onClick={() => startEdit(item.item, amount)}
+                          className="p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity hover:bg-muted text-muted-foreground hover:text-foreground"
+                          title="Edit amount"
+                        >
+                          <Pencil className="w-3 h-3" />
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-4 pt-4 border-t border-border flex items-center justify-between">
             <span className="text-base font-bold text-foreground">Total Estimated</span>
-            <span className="text-2xl font-bold text-gradient-primary">
-              €{total.toLocaleString(config.locale)}
-            </span>
+            <div className="text-right">
+              <span className="text-2xl font-bold text-gradient-primary">
+                €{total.toLocaleString(config.locale)}
+              </span>
+              {total !== baseTotal && (
+                <p className="text-[11px] text-muted-foreground mt-0.5">
+                  Original: €{baseTotal.toLocaleString(config.locale)}
+                </p>
+              )}
+            </div>
           </div>
 
           {/* Budget bar */}

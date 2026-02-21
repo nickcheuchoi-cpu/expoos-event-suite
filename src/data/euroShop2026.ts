@@ -200,6 +200,15 @@ export const milestones: Milestone[] = [
   { label: "Evaluation Scheduled", icon: BarChart3, date: "Feb 18, 2026", auto: true, done: false },
 ];
 
+// --- Executive Summary ---
+
+export const executiveSummary = [
+  { positive: true,  text: "Client satisfaction score 4.7/5.0 — exceeded 4.5 KPI target." },
+  { positive: true,  text: "Staff replacement resolved within SLA with zero build impact." },
+  { positive: false, text: "Rigging approval required manual escalation causing a 3-day delay." },
+  { positive: false, text: "LED Wall delivery rerouted at last minute due to transport backlog." },
+];
+
 // --- Notifications ---
 
 export const notifications = [
@@ -241,6 +250,7 @@ export const euroShop2026Event: EventData = {
   lessons,
   actions,
   confidenceSections,
+  executiveSummary,
   milestones,
   notifications,
 };
